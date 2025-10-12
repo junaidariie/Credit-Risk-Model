@@ -14,6 +14,13 @@ st.markdown("""
     .main {
         max-width: 800px;
         padding: 1rem;
+        margin: 0 auto;
+    }
+    .block-container {
+        max-width: 800px;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        margin: 0 auto;
     }
     h1 {
         color: #2c3e50;
