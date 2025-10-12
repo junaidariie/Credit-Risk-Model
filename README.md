@@ -1,6 +1,6 @@
 # RiskGuard AI: Credit Risk Modelling 🚀
 
-🔗 **Live Streamlit App**: [https://credit-risk-model-ubh6j8cdappfztmu4tbmvz.streamlit.app/)  
+🔗 **Live Streamlit App**: https://credit-risk-model-ubh6j8cdappfztmu4tbmvz.streamlit.app/
 
 ---
 
