@@ -1,6 +1,14 @@
-components:
-  backend:
-    type: python
-    entrypoint: app.py
-    install: pip install -r requirements.txt
-    start: uvicorn app:app --host 0.0.0.0 --port 8000
+name: fastapi-app
+language: python
+python_version: "3.11"
+
+build:
+  commands:
+    - pip install -r requirements.txt
+
+run:
+  command: uvicorn app:app --host 0.0.0.0 --port $PORT
+  port: $PORT
+
+health_check:
+  path: /
