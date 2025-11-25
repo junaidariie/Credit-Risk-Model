@@ -104,7 +104,7 @@ st.markdown("""
 st.title("🛡️ RiskGuard AI")
 st.markdown('<p class="subtitle">Credit Risk Assessment Platform</p>', unsafe_allow_html=True)
 st.markdown(
-    '<p class="subtitle" style="color:blue; font-weight:bold;">The app could take up to <b>1 minute</b> when using for the first time due to API latency.</p>',
+    '<p class="subtitle" style="color:blue; font-weight:bold;">The app could take up to <b>20 seconds</b> when using for the first time due to API cold start.</p>',
     unsafe_allow_html=True
 )
 
@@ -199,4 +199,5 @@ if st.button('🔍 Analyze Credit Risk'):
                 
         except Exception as e:
             st.error(f"❌ Connection error: {str(e)}")
+
 
