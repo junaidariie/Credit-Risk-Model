@@ -2,6 +2,9 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from prediction_helper import predict
 from advisor_bot import generate_advice
+from chatbot_advisor import financial_advisor_chatbot, seed_chat_memory
+from langchain_core.messages import HumanMessage
+
 
 app = FastAPI()
 
@@ -24,6 +27,11 @@ class CreditRiskOutput(BaseModel):
     rating: str
     advisor_response: str | None = None
 
+class ChatMessage(BaseModel):
+    thread_id: str
+    message: str
+
+
 @app.get("/")
 def greeting():
     return {"message":"Hello world!!"}
@@ -43,6 +51,26 @@ def predict_credit_risk(input_data: CreditRiskInput):
                                                     input_data.loan_purpose, input_data.loan_type)
         
         advisor_reply = generate_advice(probability=probability, credit_score=credit_score, rating=rating)
+
+        seed_chat_memory(probability, credit_score, rating, advisor_reply, thread_id=str(input_data.income))
+
+
         return CreditRiskOutput(probability=probability, credit_score=credit_score, rating=rating, advisor_response=advisor_reply)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/chat")
+def chat(message_data: ChatMessage):
+    try:
+        config = {"configurable": {"thread_id": message_data.thread_id}}
+
+        result = financial_advisor_chatbot.invoke(
+            {"messages": [HumanMessage(content=message_data.message)]},
+            config=config
+        )
+
+        return {"response": result["messages"][-1].content}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
