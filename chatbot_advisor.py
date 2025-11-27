@@ -40,17 +40,18 @@ config = {'configurable' : {'thread_id' : thread_id}}
 
 def seed_chat_memory(probability, credit_score, rating, advisor_reply, thread_id="default"):
     summary = (
-        f"Here is the latest credit evaluation:\n"
-        f"- Default Probability: {probability:.2%}\n"
+        f"Loan evaluation details (store these as context):\n"
         f"- Credit Score: {credit_score}\n"
-        f"- Rating: {rating}\n\n"
-        f"Advisor summary: {advisor_reply}\n"
-        f"Use this information when responding to future questions."
+        f"- Default Probability: {probability:.2%}\n"
+        f"- Rating Category: {rating}\n\n"
+        f"LLM Advisor Summary: {advisor_reply}\n"
+        f"Use these values when responding to follow-up questions."
     )
 
     config = {"configurable": {"thread_id": thread_id}}
-    
+
+    # Store as HumanMessage, so the bot treats it as provided context
     financial_advisor_chatbot.invoke(
-        {"messages": [AIMessage(content=summary)]},
+        {"messages": [HumanMessage(content=summary)]},
         config=config
     )
