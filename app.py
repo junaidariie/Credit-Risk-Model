@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from prediction_helper import predict
+from advisor_bot import generate_advice
 
 app = FastAPI()
 
@@ -21,6 +22,7 @@ class CreditRiskOutput(BaseModel):
     probability: float
     credit_score: int
     rating: str
+    advisor_response: str | None = None
 
 @app.get("/")
 def greeting():
@@ -39,6 +41,8 @@ def predict_credit_risk(input_data: CreditRiskInput):
                                                     input_data.delinquency_ratio, input_data.credit_utilization_ratio,
                                                     input_data.num_open_accounts, input_data.residence_type,
                                                     input_data.loan_purpose, input_data.loan_type)
-        return CreditRiskOutput(probability=probability, credit_score=credit_score, rating=rating)
+        
+        advisor_reply = generate_advice(probability=probability, credit_score=credit_score, rating=rating)
+        return CreditRiskOutput(probability=probability, credit_score=credit_score, rating=rating, advisor_response=advisor_reply)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
