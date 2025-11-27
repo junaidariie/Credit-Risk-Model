@@ -6,181 +6,108 @@ import uuid
 st.set_page_config(
     page_title="RiskGuard AI: Credit Risk Modelling",
     page_icon="🛡️",
-    layout="centered"
+    layout="wide"
 )
 
-# Initialize session storage for chat messages
+# Initialize session storage
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 if "thread_id" not in st.session_state:
-    st.session_state.thread_id = str(uuid.uuid4())  # unique conversation memory per user
+    st.session_state.thread_id = str(uuid.uuid4())
+if "analysis_done" not in st.session_state:
+    st.session_state.analysis_done = False
 
-# Custom CSS for clean, compact styling
+# -------------------- SIDEBAR CHATBOT --------------------
+
+with st.sidebar:
+    st.markdown("""
+        <h3 style='color:#2c3e50; margin-bottom:5px;'>💬 RiskGuard AI Assistant</h3>
+        <p style='font-size:13px; color:#7f8c8d;'>
+            Ask follow-up questions about your loan eligibility, credit score or improvement strategy.
+        </p>
+        <hr style='margin:10px 0;'>
+    """, unsafe_allow_html=True)
+
+    CHAT_URL = st.secrets["CHAT_URL"]
+
+    # Show previous messages
+    chat_container = st.container(height=350)
+
+    with chat_container:
+        for role, msg in st.session_state.chat_history:
+            if role == "user":
+                st.markdown(f"""
+                <div style='background:#dff9fb; padding:8px; border-radius:6px; margin:5px; text-align:right;'>
+                    {msg}
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                <div style='background:#f4f9ff; border-left:4px solid #2980b9; padding:8px; border-radius:6px; margin:5px;'>
+                    {msg}
+                </div>
+                """, unsafe_allow_html=True)
+
+    # Chat input
+    user_msg = st.text_input("Type your message...", disabled=not st.session_state.analysis_done)
+
+    send_button = st.button("Send", use_container_width=True, disabled=not st.session_state.analysis_done)
+
+    if send_button and user_msg.strip():
+        payload = {
+            "thread_id": st.session_state.thread_id,
+            "message": user_msg
+        }
+
+        try:
+            response = requests.post(CHAT_URL, json=payload)
+            reply = response.json().get("response", "⚠️ Bot did not respond.")
+
+            st.session_state.chat_history.append(("user", user_msg))
+            st.session_state.chat_history.append(("bot", reply))
+
+        except:
+            st.error("Chat server unavailable.")
+
+# -------------------- MAIN PAGE UI --------------------
+
 st.markdown("""
 <style>
-.main {
-    max-width: 800px;
-    padding: 1rem;
-    margin: 0 auto;
-}
-.block-container {
-    max-width: 800px;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    margin: 0 auto;
-}
-h1 {
-    color: #2c3e50;
-    font-size: 1.8rem !important;
-    font-weight: 600 !important;
-    margin-bottom: 0.3rem !important;
-}
-.subtitle {
-    color: #7f8c8d;
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
-}
-.section-divider {
-    border-top: 1px solid #e0e0e0;
-    margin: 1.5rem 0 1rem 0;
-}
-.section-title {
-    color: #34495e;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.8rem;
+.result-box {
+    background: #eef2f3;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
 }
 .advisor-box {
-    background: #f4f9ff;
-    border-left: 4px solid #2980b9;
+    background: #f7fbff;
+    border-left: 4px solid #3498db;
     padding: 15px;
-    margin-top: 15px;
     border-radius: 6px;
-    font-size: 0.95rem;
-    line-height: 1.4rem;
-    color: #2c3e50;
-}
-.chat-bubble-user {
-    background: #dff9fb;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 6px 0;
-    text-align: right;
-    font-size: 0.9rem;
-}
-.chat-bubble-bot {
-    background: #f4f9ff;
-    border-left: 4px solid #2980b9;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 6px 0;
-    font-size: 0.9rem;
-}
-.stButton>button {
-    width: 100%;
-    background: #3498db;
-    color: white;
-    font-weight: 600;
-    padding: 0.6rem;
-    border: none;
-    border-radius: 6px;
-    margin-top: 1rem;
-}
-.stButton>button:hover {
-    background: #2980b9;
-}
-.calculated-metric {
-    background: #f8f9fa;
-    padding: 0.8rem;
-    border-radius: 6px;
-    border-left: 3px solid #3498db;
-    margin: 0.8rem 0;
-}
-.metric-label {
-    color: #7f8c8d;
-    font-size: 0.85rem;
-    margin-bottom: 0.2rem;
-}
-.metric-value {
-    color: #2c3e50;
-    font-size: 1.3rem;
-    font-weight: 600;
-}
-.result-card {
-    background: #ecf0f1;
-    padding: 1.2rem;
-    border-radius: 8px;
-    margin-top: 1rem;
-}
-.result-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.6rem 0;
-    border-bottom: 1px solid #d5d8dc;
-}
-.result-item:last-child {
-    border-bottom: none;
-}
-.result-label {
-    color: #7f8c8d;
-    font-weight: 500;
-}
-.result-value {
-    color: #2c3e50;
-    font-weight: 600;
-    font-size: 1.1rem;
+    margin-top: 10px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Header
 st.title("🛡️ RiskGuard AI")
-st.markdown('<p class="subtitle">Credit Risk Assessment Platform</p>', unsafe_allow_html=True)
-st.markdown(
-    '<p class="subtitle" style="color:blue; font-weight:bold;">The app may take up to <b>20 seconds</b> on the first run (API cold start).</p>',
-    unsafe_allow_html=True
-)
+st.write("Smart and AI-powered loan risk evaluation.")
 
-# Personal & Loan Information
-st.markdown('<div class="section-title">Personal & Loan Information</div>', unsafe_allow_html=True)
+# Inputs
+age = st.number_input("Age", 18, 100, 30)
+income = st.number_input("Annual Income (₹)", 0, 20000000, 1200000)
+loan_amount = st.number_input("Loan Amount (₹)", 0, 20000000, 2500000)
+loan_tenure_months = st.number_input("Loan Tenure (Months)", 1, 360, 36)
+loan_type = st.selectbox("Loan Type", ["Secured", "Unsecured"])
+loan_purpose = st.selectbox("Loan Purpose", ["Home", "Auto", "Business", "Personal", "Education"])
+residence_type = st.selectbox("Residence Type", ["Owned", "Rented", "Mortgage"])
 
-col1, col2 = st.columns(2)
-with col1:
-    age = st.number_input('Age', min_value=18, max_value=100, value=28, step=1)
-    loan_amount = st.number_input('Loan Amount (₹)', min_value=0, value=2560000, step=100000)
-    loan_purpose = st.selectbox('Loan Purpose', ['Education', 'Home', 'Auto', 'Personal'])
+avg_dpd_per_delinquency = st.number_input("Avg Days Past Due", 0, 200, 10)
+delinquency_ratio = st.slider("Delinquency Ratio (%)", 0, 100, 30)
+credit_utilization_ratio = st.slider("Credit Utilization (%)", 0, 100, 40)
+num_open_accounts = st.number_input("Active Loan Accounts", 1, 10, 2)
 
-with col2:
-    income = st.number_input('Annual Income (₹)', min_value=0, value=1200000, step=50000)
-    loan_tenure_months = st.number_input('Tenure (months)', min_value=0, value=36, step=1)
-    residence_type = st.selectbox('Residence Type', ['Owned', 'Rented', 'Mortgage'])
 
-# Loan to income ratio
-loan_to_income_ratio = loan_amount / income if income > 0 else 0
-st.markdown(f"""
-<div class="calculated-metric">
-    <div class="metric-label">Loan to Income Ratio</div>
-    <div class="metric-value">{loan_to_income_ratio:.2f}</div>
-</div>
-""", unsafe_allow_html=True)
-
-# Credit Information Section
-st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
-st.markdown('<div class="section-title">Credit Information</div>', unsafe_allow_html=True)
-
-col3, col4 = st.columns(2)
-with col3:
-    avg_dpd_per_delinquency = st.number_input('Avg Days Past Due', min_value=0, value=20)
-    credit_utilization_ratio = st.number_input('Credit Utilization (%)', min_value=0, max_value=100, value=30, step=1)
-
-with col4:
-    delinquency_ratio = st.number_input('Delinquency Ratio (%)', min_value=0, max_value=100, value=30, step=1)
-    num_open_accounts = st.number_input('Open Loan Accounts', min_value=1, max_value=4, value=2, step=1)
-
-loan_type = st.selectbox('Loan Type', ['Unsecured', 'Secured'])
-
-# Submit
-if st.button('🔍 Analyze Credit Risk'):
+if st.button("🔍 Analyze Credit Risk", use_container_width=True):
     API_URL = st.secrets["API_URL"]
 
     payload = {
@@ -197,86 +124,25 @@ if st.button('🔍 Analyze Credit Risk'):
         "loan_type": loan_type
     }
 
-    with st.spinner('Analyzing...'):
-        try:
-            response = requests.post(API_URL, json=payload)
+    with st.spinner("Analyzing your financial profile..."):
+        result = requests.post(API_URL, json=payload).json()
 
-            if response.status_code == 200:
-                result = response.json()
+    st.markdown("### 📊 Assessment Summary")
 
-                # Model Prediction Section
-                st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
-                st.markdown('<div class="section-title">Assessment Results</div>', unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class="result-box">
+        <b>Credit Score:</b> {result['credit_score']} <br>
+        <b>Default Risk:</b> {result['probability']:.2%} <br>
+        <b>Rating:</b> {result['rating']}
+    </div>
+    """, unsafe_allow_html=True)
 
-                st.markdown(f"""
-                <div class="result-card">
-                    <div class="result-item">
-                        <span class="result-label">Default Probability</span>
-                        <span class="result-value">{result['probability']:.2%}</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Credit Score</span>
-                        <span class="result-value">{result['credit_score']}</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Credit Rating</span>
-                        <span class="result-value">{result['rating']}</span>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+    st.markdown("### 🤖 Advisor Response")
 
-                st.success("✅ Model Prediction Complete")
+    st.markdown(f"""
+    <div class="advisor-box">
+        {result['advisor_response']}
+    </div>
+    """, unsafe_allow_html=True)
 
-                # LLM Advisory Section
-                if result.get("advisor_response"):
-                    st.markdown('<div class="section-title">AI Credit Advisor</div>', unsafe_allow_html=True)
-                    st.markdown(f"""
-                    <div class="advisor-box">{result['advisor_response']}</div>
-                    """, unsafe_allow_html=True)
-                else:
-                    st.warning("⚠️ No advisory response from LLM.")
-
-                # Enable chat area now
-                st.session_state.analysis_done = True
-
-            else:
-                st.error(f"❌ API Error: {response.status_code}")
-
-        except Exception as e:
-            st.error(f"❌ Connection error: {str(e)}")
-
-
-# ========================= CHATBOT SECTION =========================
-if st.session_state.get("analysis_done", False):
-
-    CHAT_URL = st.secrets["CHAT_URL"]
-
-    st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">💬 Interactive Loan Assistant</div>', unsafe_allow_html=True)
-
-    user_input = st.text_input("Ask a follow-up question:")
-
-    if st.button("Send"):
-        if user_input.strip():
-            payload = {
-                "thread_id": st.session_state.thread_id,
-                "message": user_input
-            }
-
-            response = requests.post(CHAT_URL, json=payload)
-
-            if response.status_code == 200:
-                reply = response.json()["response"]
-
-                # Store chat history in frontend for display
-                st.session_state.chat_history.append(("user", user_input))
-                st.session_state.chat_history.append(("bot", reply))
-            else:
-                st.error("⚠️ Chat backend error.")
-
-    # Display chat history
-    for role, msg in st.session_state.chat_history:
-        if role == "user":
-            st.markdown(f"<div class='chat-bubble-user'>{msg}</div>", unsafe_allow_html=True)
-        else:
-            st.markdown(f"<div class='chat-bubble-bot'>{msg}</div>", unsafe_allow_html=True)
+    st.session_state.analysis_done = True
