@@ -43,6 +43,18 @@ st.markdown("""
         font-weight: 600;
         margin-bottom: 0.8rem;
     }
+    
+    .advisor-box {
+        background: #f4f9ff;
+        border-left: 4px solid #2980b9;
+        padding: 15px;
+        margin-top: 15px;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        line-height: 1.4rem;
+        color: #2c3e50;
+    }
+
     .stButton>button {
         width: 100%;
         background: #3498db;
@@ -104,10 +116,9 @@ st.markdown("""
 st.title("🛡️ RiskGuard AI")
 st.markdown('<p class="subtitle">Credit Risk Assessment Platform</p>', unsafe_allow_html=True)
 st.markdown(
-    '<p class="subtitle" style="color:blue; font-weight:bold;">The app could take up to <b>20 seconds</b> when using for the first time due to API cold start.</p>',
+    '<p class="subtitle" style="color:blue; font-weight:bold;">The app may take up to <b>20 seconds</b> on the first run (API cold start).</p>',
     unsafe_allow_html=True
 )
-
 
 # Personal & Loan Information
 st.markdown('<div class="section-title">Personal & Loan Information</div>', unsafe_allow_html=True)
@@ -123,7 +134,7 @@ with col2:
     loan_tenure_months = st.number_input('Tenure (months)', min_value=0, value=36, step=1)
     residence_type = st.selectbox('Residence Type', ['Owned', 'Rented', 'Mortgage'])
 
-# Calculate and display loan to income ratio
+# Loan to income ratio
 loan_to_income_ratio = loan_amount / income if income > 0 else 0
 st.markdown(f"""
 <div class="calculated-metric">
@@ -132,7 +143,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Credit Information
+# Credit Information Section
 st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section-title">Credit Information</div>', unsafe_allow_html=True)
 
@@ -147,10 +158,10 @@ with col4:
 
 loan_type = st.selectbox('Loan Type', ['Unsecured', 'Secured'])
 
-# Analysis Button
+# Submit
 if st.button('🔍 Analyze Credit Risk'):
     API_URL = st.secrets["API_URL"]
-    
+
     payload = {
         "age": age,
         "income": income,
@@ -164,17 +175,18 @@ if st.button('🔍 Analyze Credit Risk'):
         "loan_purpose": loan_purpose,
         "loan_type": loan_type
     }
-    
+
     with st.spinner('Analyzing...'):
         try:
             response = requests.post(API_URL, json=payload)
-            
+
             if response.status_code == 200:
                 result = response.json()
-                
+
+                # Model Prediction Section
                 st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
                 st.markdown('<div class="section-title">Assessment Results</div>', unsafe_allow_html=True)
-                
+
                 st.markdown(f"""
                 <div class="result-card">
                     <div class="result-item">
@@ -191,13 +203,23 @@ if st.button('🔍 Analyze Credit Risk'):
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
-                
-                st.success("✅ Analysis completed successfully")
-                
+
+                # Success message
+                st.success("✅ Model Prediction Complete")
+
+                # LLM Advisory Section
+                if result.get("advisor_response"):
+                    st.markdown('<div class="section-title">AI Credit Advisor</div>', unsafe_allow_html=True)
+                    st.markdown(f"""
+                    <div class="advisor-box">
+                        {result['advisor_response']}
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.warning("⚠️ No advisory response from LLM.")
+
             else:
                 st.error(f"❌ API Error: {response.status_code}")
-                
+
         except Exception as e:
             st.error(f"❌ Connection error: {str(e)}")
-
-
