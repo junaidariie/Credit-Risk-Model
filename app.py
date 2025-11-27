@@ -52,7 +52,8 @@ def predict_credit_risk(input_data: CreditRiskInput):
         
         advisor_reply = generate_advice(probability=probability, credit_score=credit_score, rating=rating)
 
-        seed_chat_memory(probability, credit_score, rating, advisor_reply, thread_id=str(input_data.income))
+        seed_chat_memory(probability, credit_score, rating, advisor_reply, thread_id=input_data.loan_type + str(input_data.income))
+
 
 
         return CreditRiskOutput(probability=probability, credit_score=credit_score, rating=rating, advisor_response=advisor_reply)
@@ -73,4 +74,5 @@ def chat(message_data: ChatMessage):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
