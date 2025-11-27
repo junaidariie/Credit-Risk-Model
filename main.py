@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import uuid
 
 # Page configuration
 st.set_page_config(
@@ -8,108 +9,128 @@ st.set_page_config(
     layout="centered"
 )
 
+# Initialize session storage for chat messages
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+if "thread_id" not in st.session_state:
+    st.session_state.thread_id = str(uuid.uuid4())  # unique conversation memory per user
+
 # Custom CSS for clean, compact styling
 st.markdown("""
-    <style>
-    .main {
-        max-width: 800px;
-        padding: 1rem;
-        margin: 0 auto;
-    }
-    .block-container {
-        max-width: 800px;
-        padding-left: 2rem;
-        padding-right: 2rem;
-        margin: 0 auto;
-    }
-    h1 {
-        color: #2c3e50;
-        font-size: 1.8rem !important;
-        font-weight: 600 !important;
-        margin-bottom: 0.3rem !important;
-    }
-    .subtitle {
-        color: #7f8c8d;
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem;
-    }
-    .section-divider {
-        border-top: 1px solid #e0e0e0;
-        margin: 1.5rem 0 1rem 0;
-    }
-    .section-title {
-        color: #34495e;
-        font-size: 1rem;
-        font-weight: 600;
-        margin-bottom: 0.8rem;
-    }
-    
-    .advisor-box {
-        background: #f4f9ff;
-        border-left: 4px solid #2980b9;
-        padding: 15px;
-        margin-top: 15px;
-        border-radius: 6px;
-        font-size: 0.95rem;
-        line-height: 1.4rem;
-        color: #2c3e50;
-    }
-
-    .stButton>button {
-        width: 100%;
-        background: #3498db;
-        color: white;
-        font-weight: 600;
-        padding: 0.6rem;
-        border: none;
-        border-radius: 6px;
-        margin-top: 1rem;
-    }
-    .stButton>button:hover {
-        background: #2980b9;
-    }
-    .calculated-metric {
-        background: #f8f9fa;
-        padding: 0.8rem;
-        border-radius: 6px;
-        border-left: 3px solid #3498db;
-        margin: 0.8rem 0;
-    }
-    .metric-label {
-        color: #7f8c8d;
-        font-size: 0.85rem;
-        margin-bottom: 0.2rem;
-    }
-    .metric-value {
-        color: #2c3e50;
-        font-size: 1.3rem;
-        font-weight: 600;
-    }
-    .result-card {
-        background: #ecf0f1;
-        padding: 1.2rem;
-        border-radius: 8px;
-        margin-top: 1rem;
-    }
-    .result-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.6rem 0;
-        border-bottom: 1px solid #d5d8dc;
-    }
-    .result-item:last-child {
-        border-bottom: none;
-    }
-    .result-label {
-        color: #7f8c8d;
-        font-weight: 500;
-    }
-    .result-value {
-        color: #2c3e50;
-        font-weight: 600;
-        font-size: 1.1rem;
-    }
-    </style>
+<style>
+.main {
+    max-width: 800px;
+    padding: 1rem;
+    margin: 0 auto;
+}
+.block-container {
+    max-width: 800px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin: 0 auto;
+}
+h1 {
+    color: #2c3e50;
+    font-size: 1.8rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.3rem !important;
+}
+.subtitle {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+.section-divider {
+    border-top: 1px solid #e0e0e0;
+    margin: 1.5rem 0 1rem 0;
+}
+.section-title {
+    color: #34495e;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+.advisor-box {
+    background: #f4f9ff;
+    border-left: 4px solid #2980b9;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    line-height: 1.4rem;
+    color: #2c3e50;
+}
+.chat-bubble-user {
+    background: #dff9fb;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 6px 0;
+    text-align: right;
+    font-size: 0.9rem;
+}
+.chat-bubble-bot {
+    background: #f4f9ff;
+    border-left: 4px solid #2980b9;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 6px 0;
+    font-size: 0.9rem;
+}
+.stButton>button {
+    width: 100%;
+    background: #3498db;
+    color: white;
+    font-weight: 600;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+.stButton>button:hover {
+    background: #2980b9;
+}
+.calculated-metric {
+    background: #f8f9fa;
+    padding: 0.8rem;
+    border-radius: 6px;
+    border-left: 3px solid #3498db;
+    margin: 0.8rem 0;
+}
+.metric-label {
+    color: #7f8c8d;
+    font-size: 0.85rem;
+    margin-bottom: 0.2rem;
+}
+.metric-value {
+    color: #2c3e50;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+.result-card {
+    background: #ecf0f1;
+    padding: 1.2rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #d5d8dc;
+}
+.result-item:last-child {
+    border-bottom: none;
+}
+.result-label {
+    color: #7f8c8d;
+    font-weight: 500;
+}
+.result-value {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+</style>
 """, unsafe_allow_html=True)
 
 # Header
@@ -204,22 +225,58 @@ if st.button('🔍 Analyze Credit Risk'):
                 </div>
                 """, unsafe_allow_html=True)
 
-                # Success message
                 st.success("✅ Model Prediction Complete")
 
                 # LLM Advisory Section
                 if result.get("advisor_response"):
                     st.markdown('<div class="section-title">AI Credit Advisor</div>', unsafe_allow_html=True)
                     st.markdown(f"""
-                    <div class="advisor-box">
-                        {result['advisor_response']}
-                    </div>
+                    <div class="advisor-box">{result['advisor_response']}</div>
                     """, unsafe_allow_html=True)
                 else:
                     st.warning("⚠️ No advisory response from LLM.")
+
+                # Enable chat area now
+                st.session_state.analysis_done = True
 
             else:
                 st.error(f"❌ API Error: {response.status_code}")
 
         except Exception as e:
             st.error(f"❌ Connection error: {str(e)}")
+
+
+# ========================= CHATBOT SECTION =========================
+if st.session_state.get("analysis_done", False):
+
+    CHAT_URL = st.secrets["CHAT_URL"]
+
+    st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">💬 Interactive Loan Assistant</div>', unsafe_allow_html=True)
+
+    user_input = st.text_input("Ask a follow-up question:")
+
+    if st.button("Send"):
+        if user_input.strip():
+            payload = {
+                "thread_id": st.session_state.thread_id,
+                "message": user_input
+            }
+
+            response = requests.post(CHAT_URL, json=payload)
+
+            if response.status_code == 200:
+                reply = response.json()["response"]
+
+                # Store chat history in frontend for display
+                st.session_state.chat_history.append(("user", user_input))
+                st.session_state.chat_history.append(("bot", reply))
+            else:
+                st.error("⚠️ Chat backend error.")
+
+    # Display chat history
+    for role, msg in st.session_state.chat_history:
+        if role == "user":
+            st.markdown(f"<div class='chat-bubble-user'>{msg}</div>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<div class='chat-bubble-bot'>{msg}</div>", unsafe_allow_html=True)
