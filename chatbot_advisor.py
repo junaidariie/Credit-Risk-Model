@@ -21,11 +21,10 @@ SYSTEM_MESSAGE = SystemMessage(
     )
 )
 
-def chat_node(state : ChatState):
-    user_query = state['messages']
-    query = [SYSTEM_MESSAGE]+user_query
-    response = llm.invoke(query)
-    return {'messages': [response]}
+def chat_node(state: ChatState):
+    full_history = [SYSTEM_MESSAGE] + state["messages"]
+    response = llm.invoke(full_history)
+    return {"messages": [response]}
 
 checkpointer = MemorySaver()
 graph = StateGraph(ChatState)
@@ -40,18 +39,18 @@ config = {'configurable' : {'thread_id' : thread_id}}
 
 def seed_chat_memory(probability, credit_score, rating, advisor_reply, thread_id="default"):
     summary = (
-        f"Loan evaluation details (store these as context):\n"
+        f"Store this as context for future answers:\n"
         f"- Credit Score: {credit_score}\n"
         f"- Default Probability: {probability:.2%}\n"
-        f"- Rating Category: {rating}\n\n"
-        f"LLM Advisor Summary: {advisor_reply}\n"
-        f"Use these values when responding to follow-up questions."
+        f"- Rating Category: {rating}\n"
+        f"- Advisor Summary: {advisor_reply}"
     )
 
     config = {"configurable": {"thread_id": thread_id}}
 
-    # Store as HumanMessage, so the bot treats it as provided context
     financial_advisor_chatbot.invoke(
-        {"messages": [HumanMessage(content=summary)]},
+        {"messages": [SystemMessage(content=summary)]},
         config=config
     )
+
+
