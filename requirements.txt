@@ -11,6 +11,6 @@ langchain-core
 langchain-groq
 pydantic
 python-dotenv
-
-
-
+langgraph-checkpoint-memory
+langchain-openai
+langgraph
