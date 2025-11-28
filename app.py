@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from prediction_helper import predict
 from advisor_bot import generate_advice
-from chatbot_advisor import financial_advisor_chatbot, seed_chat_memory
+from chatbot_advisor import financial_advisor_chatbot, ask_chatbot, format_chat_input
 from langchain_core.messages import HumanMessage
 
 
@@ -30,6 +30,10 @@ class CreditRiskOutput(BaseModel):
 class ChatMessage(BaseModel):
     thread_id: str
     message: str
+    probability: float
+    credit_score: int
+    rating: str
+    advisor_reply: str
 
 
 @app.get("/")
@@ -52,27 +56,29 @@ def predict_credit_risk(input_data: CreditRiskInput):
         
         advisor_reply = generate_advice(probability=probability, credit_score=credit_score, rating=rating)
 
-        seed_chat_memory(probability, credit_score, rating, advisor_reply, thread_id=input_data.loan_type + str(input_data.income))
-
-
-
         return CreditRiskOutput(probability=probability, credit_score=credit_score, rating=rating, advisor_response=advisor_reply)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
+
 @app.post("/chat")
 def chat(message_data: ChatMessage):
     try:
-        config = {"configurable": {"thread_id": message_data.thread_id}}
+        probability = message_data.probability
+        credit_score = message_data.credit_score
+        rating = message_data.rating
+        advisor_reply = message_data.advisor_reply
 
-        result = financial_advisor_chatbot.invoke(
-            {"messages": [HumanMessage(content=message_data.message)]},
-            config=config
+        response = ask_chatbot(
+            probability, 
+            credit_score, 
+            rating, 
+            advisor_reply, 
+            message_data.message, 
+            message_data.thread_id
         )
 
-        return {"response": result["messages"][-1].content}
+        return {"response": response}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
