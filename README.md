@@ -1,117 +1,92 @@
-# RiskGuard AI: Credit Risk Modelling 🚀
+# 🛡️ RiskGuard AI | Intelligent Credit Risk Modelling & Advisory System
 
-🔗 **Live Streamlit App**: https://credit-risk-model-ubh6j8cdappfztmu4tbmvz.streamlit.app/
+🚀 **Overview**  
+RiskGuard AI is a complete AI-powered credit risk assessment platform designed to simulate real banking decision systems.  
+It combines:  
+- A trained machine learning model to predict default risk  
+- A credit scoring logic  
+- A personalized AI loan advisor  
+- A memory-powered conversational chatbot  
 
----
+Users receive not only a score and risk category but also real-world style approval reasoning and improvement suggestions.
 
-## 🧠 Project Overview
+## 🎯 Key Features
 
-**RiskGuard AI** is an end-to-end machine learning system that predicts the likelihood of a customer defaulting on a loan. Built with financial institutions in mind, this credit risk modelling solution processes historical loan and bureau data to generate accurate, interpretable risk scores.
-
-The application is deployed with a scalable backend API and an interactive frontend for risk analysts to assess creditworthiness in real-time.
-
----
-
-## 🎯 Objective
-
-To develop a robust and interpretable credit risk prediction model that:
-- Accurately classifies the likelihood of default
-- Scales well in real-world production environments
-- Provides decile-wise insights and model metrics
-- Integrates seamlessly into MLOps pipelines
-
----
+| Feature | Description |
+|---------|-------------|
+| 📊 **Credit Risk Prediction Model** | Uses machine learning (XGBoost) to estimate probability of default |
+| 🧠 **Credit Scoring Engine** | Converts model output into a realistic credit score and rating |
+| 🏦 **Approval-style Decision Logic** | Approve, decline, or conditional feedback |
+| 🤖 **AI Financial Advisor** | Generates human-like reasoning and personalized feedback |
+| 💬 **Interactive Chatbot** | Lets users ask follow-up questions and receive contextual answers |
+| 🧷 **Thread Memory** | Chatbot remembers past answers and user state using LangGraph memory |
+| 🎨 **Modern UI** | Responsive, professional UI built in Streamlit (automatically enhanced using AI styling) |
 
 ## 📦 Dataset
-
-- **Size**: 50,000 records  
-- **Features**: Customer loan and bureau attributes  
-- **Target Variable**: `default` (1 = Default, 0 = No Default)
-
----
+- **Size**: 50,000+ borrower records  
+- **Features**: Loan behavior, credit bureau metadata, repayment history  
+- **Target**: "default" (binary classification)
 
 ## 🧹 Data Preprocessing
+- Missing value handling  
+- Outlier treatment (Winsorization)  
+- One-hot encoding for categorical fields  
+- Numerical scaling using Min-Max Normalization  
+- Feature filtering using: Information Value (IV), Variance Inflation Factor (VIF), Manual domain checks
 
-- Invalid categorical values replaced with statistical mode
-- Feature selection using:
-  - **Information Value (IV)**
-  - **Variance Inflation Factor (VIF)**
-  - **Domain knowledge**
-- Numerical scaling using Min-Max normalization
-- Missing value imputation
+## 📊 Model Performance
 
----
+| Metric | Result |
+|--------|--------|
+| **AUC** | 0.87 |
+| **Gini Coefficient** | 0.77 |
+| **KS Statistic** | 48% (strong discrimination in early deciles) |
 
-## 📊 Model Evaluation
-
-| Metric                  | Target   | Achieved                           |
-|-------------------------|----------|------------------------------------|
-| AUC (Area Under Curve)  | > 85%    | ✅ Achieved                         |
-| Gini Coefficient        | > 85     | ✅ Achieved                         |
-| KS Statistic            | > 40     | ✅ Achieved (High KS in early deciles) |
-
-Other evaluations:
-- Classification Report
-- Decile-wise Performance
-- Confusion Matrix
-- ROC Curves
-
----
+Additional evaluation: ROC Curve, Confusion Matrix, Decile Lift Chart
 
 ## 🛠️ Tech Stack
 
-**Languages & Frameworks**:
-- Python, FastAPI, Streamlit
+| Component | Technology |
+|-----------|------------|
+| **Backend** | FastAPI, Uvicorn |
+| **ML** | Pandas, NumPy, Scikit-learn, XGBoost |
+| **LLM** | Groq Llama-3.1 via LangChain + LangGraph |
+| **Frontend** | Streamlit |
+| **Deployment** | Railway + Streamlit Cloud |
+| **Secrets Management** | .env locally and secrets.toml in Streamlit |
 
-**Libraries**:
-- Pandas, NumPy, Scikit-learn, XGBoost, Matplotlib, Seaborn
+## 🧩 Architecture
+User → Streamlit UI
+→ FastAPI (Model + LLM logic)
+→ (XGBoost + Scoring + Advisor Prompt)
+→ Chatbot (LangGraph memory)
+→ Response → UI
 
-**MLOps & Deployment**:
-- Docker
-- AWS EC2 (Ubuntu)
-- Streamlit Cloud
-- dotenv & TOML-based secrets management
 
----
+## 🧠 AI Components
 
-## 🔧 Backend API (FastAPI)
+1. **Advisor Model Prompt**  
+   Generates a short and precise approval response based on model output.  
+   Example structure: Greeting → Decision → Risk score explanation → Actionable tips → CTA: continue conversation with AI chatbot
 
-A FastAPI server was built to handle model inference requests. It separates logic for young and older users internally, using the appropriate pre-trained model.
+2. **Memory Chatbot**  
+   Provides follow-up answers like:  
+   - "Why was my loan rejected?"  
+   - "How can I increase my approval chances?"  
+   - "What should I fix first?"  
+   Memory is persistent per thread_id.
 
-### 🔐 Security
+## 🎨 UI Notes
+The initial version was a simple functional UI. Once validated, the frontend was improved using AI assistance to match a professional fintech product experience.
 
-- Uses `.env` locally via `python-dotenv`
-- Uses `secrets.toml` on Streamlit Cloud
-- Dockerized for container-based deployment
+## ▶️ Live App
+🌍 **Streamlit App**: [https://credit-risk-model-ubh6j8cdappfztmu4tbmvz.streamlit.app/](https://credit-risk-model-ubh6j8cdappfztmu4tbmvz.streamlit.app/)  
+🖥️ **Backend URL (FastAPI)**: Deployed on Railway
 
----
+## 🚀 Quick Start
+1. Clone repo: `git clone <your-repo-url>`  
+2. Install: `pip install -r requirements.txt`  
+3. Run: `streamlit run app.py`  
+4. Access: `http://localhost:8501`
 
-## 🖥️ Frontend (Streamlit)
-
-The frontend was built using **Streamlit** to offer an intuitive UI for credit risk evaluation.
-
-### Features:
-- Responsive inputs for key credit variables
-- Real-time risk prediction via FastAPI
-- Displays:
-  - Default probability
-  - Credit score
-  - Risk rating
-
-### Deployment:
-- **Local**: via `streamlit run main.py`
-- **Cloud**: Hosted on [Streamlit Cloud](https://credit-risk-model-zgqk3gy549secuhsiccbo7.streamlit.app/)
-- Backend API integrated using `st.secrets` for secure variable handling
-
----
-
-## 🐳 Docker & AWS Deployment
-
-- Docker image created for FastAPI backend
-- Pushed to DockerHub
-- Deployed on **AWS EC2 (Ubuntu)**
-- Port 8000 exposed for API access
-- Uvicorn used as ASGI server
-
----
-![Screenshot 2025-06-29 132552](https://github.com/user-attachments/assets/35f28216-2595-400e-9d85-e0806ddb28ae)
+## 📁 Project Structure
