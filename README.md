@@ -1,5 +1,8 @@
 # 🛡️ RiskGuard AI | Intelligent Credit Risk Modelling & Advisory System
 
+## ▶️ Live App
+🌍 **Streamlit App**: [https://credit-risk-model-ubh6j8cdappfztmu4tbmvz.streamlit.app/](https://credit-risk-model-ubh6j8cdappfztmu4tbmvz.streamlit.app/)  
+
 🚀 **Overview**  
 RiskGuard AI is a complete AI-powered credit risk assessment platform designed to simulate real banking decision systems.  
 It combines:  
@@ -79,14 +82,9 @@ User → Streamlit UI
 ## 🎨 UI Notes
 The initial version was a simple functional UI. Once validated, the frontend was improved using AI assistance to match a professional fintech product experience.
 
-## ▶️ Live App
-🌍 **Streamlit App**: [https://credit-risk-model-ubh6j8cdappfztmu4tbmvz.streamlit.app/](https://credit-risk-model-ubh6j8cdappfztmu4tbmvz.streamlit.app/)  
-🖥️ **Backend URL (FastAPI)**: Deployed on Railway
-
 ## 🚀 Quick Start
 1. Clone repo: `git clone <your-repo-url>`  
 2. Install: `pip install -r requirements.txt`  
 3. Run: `streamlit run app.py`  
 4. Access: `http://localhost:8501`
 
-## 📁 Project Structure
