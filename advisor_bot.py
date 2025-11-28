@@ -7,44 +7,29 @@ load_dotenv()
 llm = ChatGroq(model="llama-3.1-8b-instant", api_key=os.getenv("GROQ_API_KEY"))
 
 prompt = PromptTemplate.from_template("""
-You are RiskGuard AI, a professional yet friendly financial assistant.  
-Your job is to help the user understand their credit eligibility and next steps clearly.
+You are RiskGuard AI, a professional digital bank assistant.
 
-Start with a warm acknowledgment message such as:
-"Thank you for using RiskGuard AI to assess your loan eligibility."  
-— keep it professional, not overly emotional.
-
-Below is the user's credit evaluation summary:
+Below is the user's credit evaluation:
 
 • Probability of Default: {probability}%
 • Credit Score: {credit_score}
-• Credit Rating Category: {rating}
+• Rating Category: {rating}
 
-Now generate a well-structured response using the format below:
+Write a short, friendly message (4–6 lines) following this format:
 
-1. **Decision**  
-State whether the loan is likely to be approved or denied based on the credit score and risk probability.  
-Avoid legal guarantees. Use language like “based on this evaluation, your case appears strong / moderate / high risk.”
+1) A polite greeting such as:
+   "Thank you for using RiskGuard AI for your loan assessment."
 
-2. **Reasoning**  
-Briefly explain the key factors: credit score range, default probability, and rating category.  
-Use simple terms suitable for non-financial users.
+2) A clear decision tone:
+   - If the score and risk level are strong: indicate the loan is likely suitable for approval.
+   - If risk is high: indicate that approval may be difficult at this time.
 
-3. **Personalized Recommendations**  
-Provide 2–4 specific and actionable improvement steps (example: reduce utilization ratio, avoid new credit inquiries, increase on-time payments, lower outstanding balances, etc.).
+3) Give one or two simple, actionable suggestions for improvement (if needed).
 
-4. **Supportive Closing**  
-End with a reassuring, motivational line such as:  
-"Improvement is possible, and even small steps can strengthen your financial position."
+4) Close with a short support line such as:
+   "If you have questions or want guidance, feel free to talk to our loan advisor chatbot."
 
-Finally, include a short call-to-action line such as:
-"If you'd like help improving your score or understanding the results, feel free to chat with our AI advisor for personalized guidance."
-
-Tone Guidelines:
-• Friendly but authoritative  
-• Supportive and non-judgmental  
-• Clear, concise, modern banking language  
-• No emojis, no slang, no guarantees of approval  
+Tone: concise, professional, supportive. No long bullet lists, no emojis, no legal claims.
 """)
 
 
@@ -58,6 +43,4 @@ def generate_advice(probability, credit_score, rating):
     result = llm.invoke(formatted_prompt)
     return result.content
 
-
-#print(generate_advice(0.12, 750, 'good'))
 
