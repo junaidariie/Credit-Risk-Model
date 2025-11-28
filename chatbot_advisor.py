@@ -21,10 +21,11 @@ SYSTEM_MESSAGE = SystemMessage(
     )
 )
 
-def chat_node(state: ChatState):
-    full_history = [SYSTEM_MESSAGE] + state["messages"]
-    response = llm.invoke(full_history)
-    return {"messages": [response]}
+def chat_node(state : ChatState):
+    user_query = state['messages']
+    query = [SYSTEM_MESSAGE]+user_query
+    response = llm.invoke(query)
+    return {'messages': [response]}
 
 checkpointer = MemorySaver()
 graph = StateGraph(ChatState)
@@ -37,20 +38,38 @@ financial_advisor_chatbot = graph.compile(checkpointer=checkpointer)
 thread_id='1'
 config = {'configurable' : {'thread_id' : thread_id}}
 
-def seed_chat_memory(probability, credit_score, rating, advisor_reply, thread_id="default"):
-    summary = (
-        f"Store this as context for future answers:\n"
-        f"- Credit Score: {credit_score}\n"
-        f"- Default Probability: {probability:.2%}\n"
-        f"- Rating Category: {rating}\n"
-        f"- Advisor Summary: {advisor_reply}"
-    )
+def format_chat_input(probability, credit_score, rating, advisor_reply, user_message):
+    return f"""
+Below is the most recent loan evaluation details. Use them when responding.
+
+CREDIT ANALYSIS
+---------------
+• Credit Score: {credit_score}
+• Default Probability: {probability:.2%}
+• Rating: {rating}
+
+AI ADVISOR SUMMARY
+------------------
+{advisor_reply}
+
+USER QUESTION
+-------------
+{user_message}
+
+Respond as RiskGuard AI in a clear, concise and helpful tone.
+"""
+
+def ask_chatbot(probability, credit_score, rating, advisor_reply, user_message, thread_id):
+    formatted_msg = format_chat_input(probability, credit_score, rating, advisor_reply, user_message)
+
+    initial_state = {
+        "messages": [HumanMessage(content=formatted_msg)]
+    }
 
     config = {"configurable": {"thread_id": thread_id}}
 
-    financial_advisor_chatbot.invoke(
-        {"messages": [SystemMessage(content=summary)]},
-        config=config
-    )
+    response = financial_advisor_chatbot.invoke(initial_state, config=config)
+    return response["messages"][-1].content
+
 
 
