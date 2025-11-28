@@ -41,8 +41,8 @@ Users receive not only a score and risk category but also real-world style appro
 
 | Metric | Result |
 |--------|--------|
-| **AUC** | 0.87 |
-| **Gini Coefficient** | 0.77 |
+| **AUC** | 0.98 |
+| **Gini Coefficient** | 0.96 |
 | **KS Statistic** | 48% (strong discrimination in early deciles) |
 
 Additional evaluation: ROC Curve, Confusion Matrix, Decile Lift Chart
