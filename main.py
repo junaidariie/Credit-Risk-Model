@@ -362,7 +362,7 @@ with col_right:
     avg_dpd_per_delinquency = st.number_input("Average Days Past Due", 0, 200, 20, help="Average days past due per delinquency")
     delinquency_ratio = st.number_input("Delinquency Ratio (%)", 0, 100, 30, help="Percentage of delinquent accounts")
     credit_utilization_ratio = st.number_input("Credit Utilization (%)", 0, 100, 30, help="Percentage of available credit used")
-    num_open_accounts = st.number_input("Open Loan Accounts", 1, 20, 2, help="Number of currently active loan accounts")
+    num_open_accounts = st.number_input("Open Loan Accounts", 0, 20, 2, help="Number of currently active loan accounts")
     
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -503,3 +503,4 @@ st.markdown("""
     <p style='font-size: 0.8rem;'>For demonstration purposes only. Not financial advice.</p>
 </div>
 """, unsafe_allow_html=True)
+
