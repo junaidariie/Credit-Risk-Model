@@ -20,270 +20,238 @@ if "analysis_done" not in st.session_state:
 if "show_info" not in st.session_state:
     st.session_state.show_info = False
 
-# ========================= ENHANCED UI STYLING =========================
+# ========================= ENHANCED UI STYLING (UPDATED) =========================
 st.markdown("""
 <style>
-/* Import Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 * {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', 'Inter', sans-serif;
 }
-
 .main {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #212d3b 0%, #223a57 100%);
     padding: 2rem 0;
 }
-
-/* Header Styling */
 .header-container {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #243b55 0%, #141e30 100%);
     padding: 2rem;
     border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(36, 59, 85,0.13);
     margin-bottom: 2rem;
     text-align: center;
 }
-
 .header-title {
     color: white;
     font-size: 2.5rem;
     font-weight: 700;
     margin: 0;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    text-shadow: 2px 2px 6px rgba(20,30,48,0.2);
+    font-family: 'Montserrat', sans-serif;
 }
-
 .header-subtitle {
-    color: #e0e7ff;
+    color: #aab3cf;
     font-size: 1.1rem;
     margin-top: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
 }
-
-/* Section Cards */
 .section-card {
-    background: white;
+    background: #25304b;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+    box-shadow: 0 4px 8px rgba(36, 59, 85,0.12);
     margin-bottom: 1.5rem;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #2952a3;
+    color: #f3f4fa;
 }
-
 .section-title {
-    color: #1e293b;
+    color: #f1f7fc;
     font-size: 1.3rem;
     font-weight: 700;
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
 }
-
-/* Info Box */
 .info-box {
-    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+    background: linear-gradient(135deg, #344667 0%, #2952a3 100%);
+    color: #f1f7fc;
     padding: 1rem;
     border-radius: 10px;
     margin: 1rem 0;
-    border-left: 4px solid #f39c12;
+    border-left: 4px solid #18aad5;
     animation: slideIn 0.5s ease-out;
 }
-
 @keyframes slideIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
-/* Metric Cards */
 .metric-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2952a3 0%, #243b55 100%);
     padding: 1.2rem;
     border-radius: 12px;
-    color: white;
+    color: #f3f4fa;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(41, 82, 163, 0.2);
     transition: transform 0.3s ease;
 }
-
 .metric-card:hover {
     transform: translateY(-5px);
 }
-
 .metric-value {
     font-size: 2rem;
     font-weight: 700;
     margin: 0.5rem 0;
+    font-family: 'Montserrat', sans-serif;
 }
-
 .metric-label {
     font-size: 0.9rem;
-    opacity: 0.9;
+    opacity: 0.92;
 }
-
-/* Result Cards */
 .result-card {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #333b9b 0%, #2d375b 100%);
     padding: 2rem;
     border-radius: 16px;
-    color: white;
-    box-shadow: 0 8px 32px rgba(240, 147, 251, 0.3);
+    color: #f4f8ff;
+    box-shadow: 0 8px 32px rgba(51, 59, 155, 0.10);
     margin: 1.5rem 0;
 }
-
 .result-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
     margin-top: 1rem;
 }
-
 .result-item {
-    background: rgba(255,255,255,0.2);
+    background: rgba(25,40,65,0.2);
     padding: 1.5rem;
     border-radius: 12px;
     backdrop-filter: blur(10px);
 }
-
 .result-item-label {
     font-size: 0.9rem;
     opacity: 0.9;
     margin-bottom: 0.5rem;
 }
-
 .result-item-value {
     font-size: 1.8rem;
     font-weight: 700;
 }
-
-/* Advisor Box */
 .advisor-box {
-    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    background: linear-gradient(135deg, #2e8bcb 0%, #243b55 100%);
+    color: #f5f5fa;
     padding: 1.5rem;
     border-radius: 12px;
     margin-top: 1.5rem;
-    border-left: 4px solid #3498db;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-left: 4px solid #18aad5;
+    box-shadow: 0 4px 15px rgba(46, 139, 203, 0.1);
 }
-
 .advisor-box h4 {
-    color: #2c3e50;
+    color: #f1f7fc;
     margin-top: 0;
 }
-
-/* Chat Bubbles */
 .chat-container {
-    background: white;
+    background: #24304e;
+    color: #fff;
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+    box-shadow: 0 4px 6px rgba(36, 48, 78,0.12);
     max-height: 400px;
     overflow-y: auto;
     margin-bottom: 1rem;
 }
-
 .chat-bubble-user {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2952a3 0%, #243b55 100%);
     color: white;
     padding: 12px 18px;
     border-radius: 18px 18px 4px 18px;
     margin: 8px 0 8px auto;
     max-width: 70%;
     text-align: right;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 2px 8px rgba(41,82,163, 0.13);
     animation: slideInRight 0.3s ease-out;
+    font-family: 'Montserrat', sans-serif;
 }
-
 .chat-bubble-bot {
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
+    background: #20293b;
+    border: 2px solid #2a3d6a;
+    color: #ebf2f8;
     padding: 12px 18px;
     border-radius: 18px 18px 18px 4px;
     margin: 8px auto 8px 0;
     max-width: 70%;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     animation: slideInLeft 0.3s ease-out;
+    font-family: 'Montserrat', sans-serif;
 }
-
 @keyframes slideInRight {
     from { opacity: 0; transform: translateX(20px); }
     to { opacity: 1; transform: translateX(0); }
 }
-
 @keyframes slideInLeft {
     from { opacity: 0; transform: translateX(-20px); }
     to { opacity: 1; transform: translateX(0); }
 }
-
-/* Buttons */
 .stButton>button {
     width: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #285aeb 0%, #223a57 100%);
     color: white;
     font-weight: 600;
     border: none;
     border-radius: 10px;
     padding: 0.8rem;
     font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(40, 90, 235, 0.13);
 }
-
 .stButton>button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 6px 20px rgba(40, 90, 235, 0.20);
 }
-
-/* Progress Bar */
 .progress-container {
     margin: 1rem 0;
 }
-
-/* Input Fields */
 .stNumberInput>div>div>input,
 .stSelectbox>div>div>select,
 .stTextInput>div>div>input {
     border-radius: 8px;
-    border: 2px solid #e9ecef;
+    border: 2px solid #233269;
     padding: 0.5rem;
     transition: border-color 0.3s ease;
+    background: #2d375b;
+    color: #e9ecfa;
+    font-family: 'Montserrat', sans-serif;
 }
-
 .stNumberInput>div>div>input:focus,
 .stSelectbox>div>div>select:focus,
 .stTextInput>div>div>input:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #285aeb;
+    box-shadow: 0 0 0 3px rgba(40, 90, 235, 0.1);
 }
-
-/* Alert Banner */
 .alert-banner {
-    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+    background: linear-gradient(135deg, #233269 0%, #285aeb 100%);
+    color: #fff;
     padding: 1rem;
     border-radius: 10px;
     margin: 1rem 0;
-    border-left: 4px solid #f39c12;
+    border-left: 4px solid #18aad5;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
-
-/* Scrollbar Styling */
 .chat-container::-webkit-scrollbar {
     width: 8px;
 }
-
 .chat-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #1a2336;
     border-radius: 10px;
 }
-
 .chat-container::-webkit-scrollbar-thumb {
-    background: #667eea;
+    background: #2952a3;
     border-radius: 10px;
 }
-
 .chat-container::-webkit-scrollbar-thumb:hover {
-    background: #764ba2;
+    background: #223a57;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -346,7 +314,6 @@ with col_left:
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Display Loan-to-Income Ratio
     loan_to_income_ratio = loan_amount / income if income > 0 else 0
     st.markdown(f"""
     <div class="metric-card">
@@ -358,12 +325,10 @@ with col_left:
 with col_right:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">💳 Credit Profile</div>', unsafe_allow_html=True)
-    
     avg_dpd_per_delinquency = st.number_input("Average Days Past Due", 0, 200, 20, help="Average days past due per delinquency")
     delinquency_ratio = st.number_input("Delinquency Ratio (%)", 0, 100, 30, help="Percentage of delinquent accounts")
     credit_utilization_ratio = st.number_input("Credit Utilization (%)", 0, 100, 30, help="Percentage of available credit used")
     num_open_accounts = st.number_input("Open Loan Accounts", 0, 20, 2, help="Number of currently active loan accounts")
-    
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ========================= ANALYSIS BUTTON =========================
@@ -395,7 +360,6 @@ if st.button("🔍 Analyze Credit Risk", use_container_width=True):
                 # Display Results
                 st.markdown('<div class="result-card">', unsafe_allow_html=True)
                 st.markdown('<h3 style="margin-top:0; color:white;">📊 Assessment Results</h3>', unsafe_allow_html=True)
-                
                 st.markdown(f"""
                 <div class="result-grid">
                     <div class="result-item">
@@ -414,7 +378,6 @@ if st.button("🔍 Analyze Credit Risk", use_container_width=True):
                 """, unsafe_allow_html=True)
                 st.markdown('</div>', unsafe_allow_html=True)
 
-                # Display AI Advisor
                 if result.get("advisor_response"):
                     st.markdown(f"""
                     <div class="advisor-box">
@@ -423,7 +386,6 @@ if st.button("🔍 Analyze Credit Risk", use_container_width=True):
                     </div>
                     """, unsafe_allow_html=True)
 
-                # Save to session
                 st.session_state.probability = result["probability"]
                 st.session_state.credit_score = result["credit_score"]
                 st.session_state.rating = result["rating"]
@@ -444,8 +406,6 @@ if st.session_state.analysis_done:
     st.markdown("<br><br>", unsafe_allow_html=True)
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">💬 Interactive Loan Chat Assistant</div>', unsafe_allow_html=True)
-
-    # Display Chat History
     if st.session_state.chat_history:
         st.markdown('<div class="chat-container">', unsafe_allow_html=True)
         for role, msg in st.session_state.chat_history:
@@ -453,24 +413,17 @@ if st.session_state.analysis_done:
             prefix = "You: " if role == "user" else "🤖 Assistant: "
             st.markdown(f"<div class='{bubble}'><strong>{prefix}</strong>{msg}</div>", unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-
-    # Chat Input
     user_query = st.text_input("Ask a question about your credit assessment:", placeholder="e.g., How can I improve my credit score?")
-
     col_send, col_clear = st.columns([3, 1])
-    
     with col_send:
         send_button = st.button("📤 Send Message", use_container_width=True)
-    
     with col_clear:
         if st.button("🗑️ Clear Chat", use_container_width=True):
             st.session_state.chat_history = []
             st.session_state.thread_id = str(uuid.uuid4())
             st.experimental_rerun()
-
     if send_button and user_query.strip():
         CHAT_URL = st.secrets["CHAT_URL"]
-        
         payload = {
             "thread_id": st.session_state.thread_id,
             "message": user_query,
@@ -479,7 +432,6 @@ if st.session_state.analysis_done:
             "rating": st.session_state.rating,
             "advisor_reply": st.session_state.advisor_reply
         }
-
         with st.spinner("🤖 Thinking..."):
             try:
                 r = requests.post(CHAT_URL, json=payload, timeout=30)
@@ -492,7 +444,6 @@ if st.session_state.analysis_done:
                     st.error(f"❌ Chat server error: {r.status_code}")
             except Exception as e:
                 st.error(f"❌ Chat failed: {e}")
-    
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
@@ -503,4 +454,3 @@ st.markdown("""
     <p style='font-size: 0.8rem;'>For demonstration purposes only. Not financial advice.</p>
 </div>
 """, unsafe_allow_html=True)
-
