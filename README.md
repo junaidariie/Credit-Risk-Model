@@ -17,7 +17,7 @@ Users receive not only a score and risk category but also real-world style appro
 
 | Feature | Description |
 |---------|-------------|
-| 📊 **Credit Risk Prediction Model** | Uses machine learning (XGBoost) to estimate probability of default |
+| 📊 **Credit Risk Prediction Model** | Uses machine learning (Logistic Regression) to estimate probability of default |
 | 🧠 **Credit Scoring Engine** | Converts model output into a realistic credit score and rating |
 | 🏦 **Approval-style Decision Logic** | Approve, decline, or conditional feedback |
 | 🤖 **AI Financial Advisor** | Generates human-like reasoning and personalized feedback |
@@ -52,7 +52,7 @@ Additional evaluation: ROC Curve, Confusion Matrix, Decile Lift Chart
 | Component | Technology |
 |-----------|------------|
 | **Backend** | FastAPI, Uvicorn |
-| **ML** | Pandas, NumPy, Scikit-learn, XGBoost |
+| **ML** | Pandas, NumPy, Scikit-learn|
 | **LLM** | Groq Llama-3.1 via LangChain + LangGraph |
 | **Frontend** | Streamlit |
 | **Deployment** | Railway + Streamlit Cloud |
@@ -81,10 +81,4 @@ User → Streamlit UI
 
 ## 🎨 UI Notes
 The initial version was a simple functional UI. Once validated, the frontend was improved using AI assistance to match a professional fintech product experience.
-
-## 🚀 Quick Start
-1. Clone repo: `git clone <your-repo-url>`  
-2. Install: `pip install -r requirements.txt`  
-3. Run: `streamlit run app.py`  
-4. Access: `http://localhost:8501`
 
