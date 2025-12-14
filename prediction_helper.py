@@ -1,15 +1,20 @@
+import os
 import joblib
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
-MODEL_PATH = 'artifacts/model_data.joblib'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+MODEL_PATH = os.path.join(BASE_DIR, "artifacts", "model_data.joblib")
 
 model_data = joblib.load(MODEL_PATH)
-model = model_data['model']
-scaler = model_data['scaler']
-features = model_data['features']
-cols_to_scale = model_data['cols_to_scale']
+
+model = model_data["model"]
+scaler = model_data["scaler"]
+features = model_data["features"]
+cols_to_scale = model_data["cols_to_scale"]
+
 
 
 def prepare_input(age, income, loan_amount, loan_tenure_months, avg_dpd_per_delinquency,
@@ -77,3 +82,4 @@ def calculate_credit_score(input_df, base_score=300, scale_length=600):
             return 'Undefined'
     rating = get_rating(credit_score[0])
     return default_probability.flatten()[0], int(credit_score[0]), rating
+
