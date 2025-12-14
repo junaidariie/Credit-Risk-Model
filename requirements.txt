@@ -13,4 +13,7 @@ pydantic
 python-dotenv
 langchain-openai
 langgraph
+setuptools
+wheel
+
 
