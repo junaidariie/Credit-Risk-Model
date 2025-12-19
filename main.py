@@ -267,7 +267,7 @@ st.markdown("""
 # Alert Banner
 st.markdown("""
 <div class="alert-banner">
-    ⚠️ <strong>Note:</strong> First request may take up to 20 seconds (API cold start).
+    ⚠️ <strong>Note:</strong> First request may take up to 30-60 seconds due to (API cold start).
 </div>
 """, unsafe_allow_html=True)
 
@@ -454,3 +454,4 @@ st.markdown("""
     <p style='font-size: 0.8rem;'>For demonstration purposes only. Not financial advice.</p>
 </div>
 """, unsafe_allow_html=True)
+
