@@ -1,58 +1,63 @@
----
-
 # 🛡️ RiskGuard AI
 
-### Intelligent Credit Risk Modeling & AI-Driven Financial Advisory System
+### Intelligent Credit Risk Modeling & AI Advisory System
 
 ---
 
-## ▶️ Live Application
+## 🔗 Live Application
 
-🌍 **Streamlit App**
-🔗 [https://junaidariie.github.io/Credit-Risk-Model/](https://junaidariie.github.io/Credit-Risk-Model/)
+🌍 **Frontend (GitHub Pages)**
+👉 [https://junaidariie.github.io/Credit-Risk-Model/](https://junaidariie.github.io/Credit-Risk-Model/)
+
+🚀 **Backend API (FastAPI on Hugging Face Spaces)**
+👉 Deployed with real-time inference & streaming support
 
 ---
 
-## 🚀 Overview
+## 🚀 Project Overview
 
-**RiskGuard AI** is an end-to-end **AI-powered credit risk assessment platform** designed to simulate how real-world financial institutions evaluate borrower risk and provide advisory insights.
+**RiskGuard AI** is an end-to-end **AI-powered credit risk assessment and advisory system** designed to simulate how modern financial institutions evaluate loan applications.
 
-The system goes beyond traditional prediction by combining:
+The platform integrates:
 
-* Machine Learning–based risk modeling
-* Credit scoring logic inspired by real banking workflows
-* An AI-powered financial advisor
-* A conversational chatbot with contextual memory
+* Machine learning–based credit risk prediction
+* Intelligent scoring and decision logic
+* An AI-powered conversational advisor
+* Speech-to-text (STT) and text-to-speech (TTS) interaction
+* Real-time streaming responses
 
-Users receive **transparent risk scores**, **approval-style decisions**, and **actionable improvement recommendations**, closely mimicking real fintech decision engines.
+The system is designed to feel like a **real-world fintech decision engine**, combining analytics, explainability, and conversational intelligence.
 
 ---
 
 ## 🎯 Key Features
 
-| Feature                             | Description                                                            |
-| ----------------------------------- | ---------------------------------------------------------------------- |
-| 📊 **Credit Risk Prediction Model** | Logistic Regression model estimating probability of default            |
-| 🧠 **Credit Scoring Engine**        | Converts model outputs into realistic credit scores & risk bands       |
-| 🏦 **Approval Decision Logic**      | Simulates bank-style approval, conditional approval, or rejection      |
-| 🤖 **AI Financial Advisor**         | Generates human-like explanations and improvement strategies           |
-| 💬 **Interactive Chatbot**          | Enables follow-up financial questions with contextual memory           |
-| 🧷 **Thread Memory (LangGraph)**    | Maintains conversational continuity per user session                   |
-| 🎨 **Modern UI**                    | Clean, responsive Streamlit interface enhanced with AI-assisted design |
+| Feature                         | Description                                                     |
+| ------------------------------- | --------------------------------------------------------------- |
+| 📊 **Credit Risk Prediction**   | Machine learning model predicts default probability             |
+| 🧠 **Credit Scoring Engine**    | Converts predictions into interpretable risk scores             |
+| 🏦 **Decision Logic**           | Produces approval, conditional, or rejection decisions          |
+| 🤖 **AI Financial Advisor**     | Provides human-like explanations and recommendations            |
+| 💬 **Conversational Chatbot**   | Users can ask follow-up questions in natural language           |
+| 🧷 **Context Memory**           | Maintains conversation context using LangGraph                  |
+| 🔊 **Text-to-Speech (TTS)**     | Converts AI responses into natural speech                       |
+| 🎙️ **Speech-to-Text (STT)**    | Allows voice-based user interaction                             |
+| 🌐 **Live Web Search (Tavily)** | Enhances chatbot responses with up-to-date information          |
+| ⚡ **Streaming Responses**       | Real-time token streaming from the backend                      |
+| 🎨 **Modern UI**                | Clean, responsive interface built using AI-assisted HTML/CSS/JS |
 
 ---
 
-## 📦 Dataset
+## 📊 Dataset Overview
 
-* **Records:** 50,000+ borrower profiles
-* **Features Include:**
-
-  * Demographics
-  * Credit utilization
-  * Loan behavior
-  * Repayment history
-  * Bureau-level indicators
+* **Size:** 50,000+ customer records
 * **Target Variable:** `default` (binary classification)
+* **Feature Categories:**
+
+  * Credit utilization & repayment behavior
+  * Income & employment details
+  * Loan characteristics
+  * Demographic attributes
 
 ---
 
@@ -60,7 +65,7 @@ Users receive **transparent risk scores**, **approval-style decisions**, and **a
 
 * Missing value handling
 * Outlier treatment (Winsorization)
-* One-hot encoding for categorical features
+* Categorical encoding
 * Min–Max normalization
 * Feature selection using:
 
@@ -70,15 +75,15 @@ Users receive **transparent risk scores**, **approval-style decisions**, and **a
 
 ---
 
-## 📊 Model Performance
+## 📈 Model Performance
 
-| Metric               | Value                              |
-| -------------------- | ---------------------------------- |
-| **AUC**              | 0.98                               |
-| **Gini Coefficient** | 0.96                               |
-| **KS Statistic**     | 48% (strong early-risk separation) |
+| Metric               | Score |
+| -------------------- | ----- |
+| **AUC**              | 0.98  |
+| **Gini Coefficient** | 0.96  |
+| **KS Statistic**     | 48%   |
 
-Additional evaluation:
+Additional evaluation includes:
 
 * ROC Curve
 * Confusion Matrix
@@ -86,96 +91,129 @@ Additional evaluation:
 
 ---
 
-## 🧠 AI System Architecture
+## 🧠 AI Architecture
+
+### 1️⃣ Credit Risk Model
+
+A supervised machine learning model trained on structured financial data to estimate default probability with high interpretability.
+
+---
+
+### 2️⃣ AI Advisor (LLM-powered)
+
+Generates human-like explanations based on:
+
+* Model outputs
+* Risk category
+* Credit behavior
+
+It provides:
+
+* Decision justification
+* Improvement suggestions
+* Context-aware guidance
+
+---
+
+### 3️⃣ Conversational Memory
+
+Implemented using **LangGraph**, enabling:
+
+* Persistent conversational context
+* Follow-up reasoning
+* Stateful interactions
+
+---
+
+### 4️⃣ Speech & Interaction Layer
+
+* **Text-to-Speech (TTS):** Converts AI responses into natural voice
+* **Speech-to-Text (STT):** Enables voice-based user input
+* **Streaming responses:** Real-time conversational experience
+
+---
+
+## 🧩 System Architecture
 
 ```
 User
- ↓
-Streamlit UI
- ↓
+  ↓
+Frontend (HTML / CSS / JS)
+  ↓
 FastAPI Backend
- ├── Credit Risk Model
- ├── Credit Scoring Logic
- ├── Advisory Prompt Engine
- └── LangGraph Chat Memory
- ↓
-AI Response → UI
+  ├── Credit Risk Model
+  ├── Scoring Logic
+  ├── AI Advisor (LLM)
+  ├── Tavily Search (Live Knowledge)
+  ├── LangGraph Memory
+  ├── TTS / STT Engine
+  ↓
+Streaming Response → UI
 ```
-
----
-
-## 🧠 AI Components Explained
-
-### 1️⃣ Advisor Model
-
-Generates concise, decision-focused responses using structured reasoning:
-
-**Flow:**
-Greeting → Decision → Risk Explanation → Improvement Tips → Follow-up CTA
-
----
-
-### 2️⃣ Conversational Memory Bot
-
-Supports natural follow-ups such as:
-
-* “Why was my loan rejected?”
-* “How can I improve my approval chances?”
-* “What should I focus on first?”
-
-Memory persists per session using **LangGraph**.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer                  | Technology                                 |
-| ---------------------- | ------------------------------------------ |
-| **Backend**            | FastAPI, Uvicorn                           |
-| **Machine Learning**   | Pandas, NumPy, Scikit-learn                |
-| **LLM**                | Groq (LLaMA-3.1) via LangChain + LangGraph |
-| **Frontend**           | Streamlit                                  |
-| **Deployment**         | Railway + Streamlit Cloud                  |
-| **Secrets Management** | `.env` (local), `secrets.toml` (cloud)     |
+| Layer          | Technology                                 |
+| -------------- | ------------------------------------------ |
+| **Frontend**   | HTML, CSS, JavaScript (AI-assisted design) |
+| **Backend**    | FastAPI                                    |
+| **ML**         | Pandas, NumPy, Scikit-learn                |
+| **LLM**        | Groq (LLaMA 3.1)                           |
+| **Memory**     | LangGraph                                  |
+| **Search**     | Tavily API                                 |
+| **Speech**     | Edge TTS + Whisper (STT)                   |
+| **Deployment** | Hugging Face Spaces, GitHub Pages          |
+| **Secrets**    | `.env` & platform secrets                  |
 
 ---
 
-## 🎨 UI & UX Notes
+## 🎯 Real-World Applications
 
-* Initial UI was functional-first
-* Later enhanced using **AI-assisted design principles**
-* Focused on clarity, responsiveness, and real fintech aesthetics
-* Built to resemble internal banking tools rather than demos
-
----
-
-## 📌 Why This Project Matters
-
-This project demonstrates:
-
-* Real-world **credit risk modeling**
-* **End-to-end AI system design**
-* Strong understanding of **financial decision pipelines**
-* Integration of **ML + LLMs + APIs + UI**
-* Production-style thinking and scalability
-
-It closely mirrors how modern fintech and lending platforms operate internally.
+* Credit approval simulation
+* Fintech decision support systems
+* AI-driven financial assistants
+* Risk analysis training tools
+* Explainable AI demonstrations
 
 ---
 
-## ✅ Future Enhancements (Planned)
+## 🚀 Future Enhancements
 
-* Multi-model ensemble (XGBoost + Logistic blend)
-* User-level historical risk tracking
-* Explainable AI (SHAP integration)
-* Voice-based interaction (STT + TTS)
-* Multi-language support
+* Emotion-aware voice synthesis
+* Multilingual support
+* Real-time speech streaming
+* User profile personalization
+* Explainable AI dashboards (SHAP)
+
+---
+
+## 👤 Author
+
+**Junaid**
+AI / Machine Learning Engineer
+Focused on building real-world, production-grade AI systems.
 
 ---
 
-## 📬 Feedback & Collaboration
+## ⭐ Final Note
 
-If you’re interested in collaboration, feedback, or discussion around AI in finance — feel free to connect.
+RiskGuard AI demonstrates how **machine learning, conversational AI, and real-time systems** can be combined to build intelligent, explainable financial applications used in modern fintech ecosystems.
 
 ---
+
+🔗 **Live App:**
+👉 [https://junaidariie.github.io/Credit-Risk-Model/](https://junaidariie.github.io/Credit-Risk-Model/)
+
+---
+
+If you want, I can also:
+
+* Rewrite this for **LinkedIn**
+* Create a **resume-optimized version**
+* Generate **architecture diagrams**
+* Add **badges & tech stack visuals**
+
+Just tell me 👍
 
