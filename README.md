@@ -160,7 +160,7 @@ Streaming Response → UI
 | **Frontend**   | HTML, CSS, JavaScript (AI-assisted design) |
 | **Backend**    | FastAPI                                    |
 | **ML**         | Pandas, NumPy, Scikit-learn                |
-| **LLM**        | Groq (LLaMA 3.1)                           |
+| **LLM**        | Groq (LLaMA 3.1) / gpt-4.1-nano            |
 | **Memory**     | LangGraph                                  |
 | **Search**     | Tavily API                                 |
 | **Speech**     | Edge TTS + Whisper (STT)                   |
@@ -200,20 +200,3 @@ Focused on building real-world, production-grade AI systems.
 ## ⭐ Final Note
 
 RiskGuard AI demonstrates how **machine learning, conversational AI, and real-time systems** can be combined to build intelligent, explainable financial applications used in modern fintech ecosystems.
-
----
-
-🔗 **Live App:**
-👉 [https://junaidariie.github.io/Credit-Risk-Model/](https://junaidariie.github.io/Credit-Risk-Model/)
-
----
-
-If you want, I can also:
-
-* Rewrite this for **LinkedIn**
-* Create a **resume-optimized version**
-* Generate **architecture diagrams**
-* Add **badges & tech stack visuals**
-
-Just tell me 👍
-
