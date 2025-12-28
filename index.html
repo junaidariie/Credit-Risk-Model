@@ -17,7 +17,7 @@
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             color: #e0e0e0;
             min-height: 100vh;
-            padding: 2rem;
+            padding: 1rem;
         }
 
         .container {
@@ -27,26 +27,28 @@
 
         .header-container {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             text-align: center;
             border: 1px solid #2a2a2a;
         }
 
         .header-title {
             color: white;
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
             font-weight: 700;
             margin: 0;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            line-height: 1.2;
         }
 
         .header-subtitle {
             color: #9a9a9a;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
             margin-top: 0.5rem;
+            padding: 0 0.5rem;
         }
 
         .alert-banner {
@@ -59,6 +61,8 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            flex-wrap: wrap;
         }
 
         .info-toggle-btn {
@@ -71,6 +75,9 @@
             cursor: pointer;
             margin-bottom: 1rem;
             transition: all 0.3s ease;
+            width: 100%;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            touch-action: manipulation;
         }
 
         .info-toggle-btn:hover {
@@ -78,6 +85,10 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
             border-color: #4a4a4a;
             background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
+        }
+
+        .info-toggle-btn:active {
+            transform: translateY(0);
         }
 
         .info-box {
@@ -95,6 +106,25 @@
             animation: slideIn 0.5s ease-out;
         }
 
+        .info-box h4 {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            margin-bottom: 0.75rem;
+        }
+
+        .info-box p {
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            margin: 0.5rem 0;
+        }
+
+        .info-box ul {
+            padding-left: 1.2rem;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+        }
+
+        .info-box li {
+            margin: 0.3rem 0;
+        }
+
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -102,9 +132,9 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .section-card {
@@ -118,7 +148,7 @@
 
         .section-title {
             color: #f0f0f0;
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
             font-weight: 700;
             margin-bottom: 1rem;
         }
@@ -131,7 +161,7 @@
             display: block;
             margin-bottom: 0.5rem;
             color: #9a9a9a;
-            font-size: 0.9rem;
+            font-size: clamp(0.85rem, 2vw, 0.9rem);
         }
 
         .form-group input,
@@ -142,7 +172,7 @@
             border: 1px solid #3a3a3a;
             background: #0f0f0f;
             color: #e0e0e0;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
             transition: border-color 0.3s ease;
         }
 
@@ -169,14 +199,14 @@
         }
 
         .metric-label {
-            font-size: 0.9rem;
+            font-size: clamp(0.85rem, 2vw, 0.9rem);
             opacity: 0.8;
             margin-bottom: 0.5rem;
             color: #9a9a9a;
         }
 
         .metric-value {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: 700;
             color: #e0e0e0;
         }
@@ -189,11 +219,12 @@
             border: 1px solid #4a4a4a;
             border-radius: 12px;
             padding: 1.2rem;
-            font-size: 1.1rem;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            margin: 2rem 0;
+            margin: 1.5rem 0;
+            touch-action: manipulation;
         }
 
         .analyze-btn:hover {
@@ -203,14 +234,19 @@
             background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
         }
 
+        .analyze-btn:active {
+            transform: translateY(-1px);
+        }
+
         .analyze-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+            transform: none !important;
         }
 
         .result-card {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             margin: 1.5rem 0;
@@ -223,10 +259,16 @@
             animation: slideIn 0.5s ease-out;
         }
 
+        .result-card h3 {
+            margin-top: 0;
+            color: white;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+        }
+
         .result-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: 1fr;
+            gap: 1rem;
             margin-top: 1rem;
         }
 
@@ -236,17 +278,18 @@
             border-radius: 12px;
             backdrop-filter: blur(10px);
             border: 1px solid #3a3a3a;
+            text-align: center;
         }
 
         .result-item-label {
-            font-size: 0.9rem;
+            font-size: clamp(0.85rem, 2vw, 0.9rem);
             opacity: 0.8;
             margin-bottom: 0.5rem;
             color: #9a9a9a;
         }
 
         .result-item-value {
-            font-size: 1.8rem;
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
             font-weight: 700;
             color: #e0e0e0;
         }
@@ -261,18 +304,29 @@
             border: 1px solid #3a3a3a;
         }
 
+        .advisor-box h4 {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            margin-bottom: 0.75rem;
+        }
+
+        .advisor-box p {
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            line-height: 1.6;
+        }
+
         .audio-controls {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
             margin-top: 1rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .audio-btn {
             background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
             color: white;
             border: 1px solid #5a5a5a;
-            padding: 0.7rem 1.5rem;
+            padding: 0.7rem 1.2rem;
             border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
@@ -280,12 +334,18 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            touch-action: manipulation;
         }
 
         .audio-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
             background: linear-gradient(135deg, #5a5a5a 0%, #4a4a4a 100%);
+        }
+
+        .audio-btn:active {
+            transform: translateY(0);
         }
 
         .audio-btn:disabled {
@@ -309,10 +369,10 @@
 
         .chat-container {
             background: #0f0f0f;
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-            max-height: 500px;
+            max-height: 400px;
             overflow-y: auto;
             margin-bottom: 1rem;
             border: 1px solid #2a2a2a;
@@ -324,11 +384,13 @@
             padding: 12px 18px;
             border-radius: 18px 18px 4px 18px;
             margin: 8px 0 8px auto;
-            max-width: 70%;
+            max-width: 85%;
             text-align: right;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             animation: slideInRight 0.3s ease-out;
             border: 1px solid #4a4a4a;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            word-wrap: break-word;
         }
 
         .chat-bubble-bot {
@@ -336,13 +398,15 @@
             border: 1px solid #3a3a3a;
             color: #d0d0d0;
             padding: 12px 18px;
+            padding-bottom: 3rem;
             border-radius: 18px 18px 18px 4px;
             margin: 8px auto 8px 0;
-            max-width: 75%;
+            max-width: 90%;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             animation: slideInLeft 0.3s ease-out;
             position: relative;
-            padding-bottom: 3rem;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            word-wrap: break-word;
         }
 
         .chat-bubble-thinking {
@@ -358,6 +422,7 @@
             display: flex;
             align-items: center;
             gap: 0.8rem;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
         }
 
         .bot-text {
@@ -411,13 +476,14 @@
             border: 1px solid #4a4a4a;
             color: #d0d0d0;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: clamp(0.75rem, 1.8vw, 0.85rem);
             padding: 0.4rem 0.8rem;
             border-radius: 8px;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 0.3rem;
+            touch-action: manipulation;
         }
 
         .tts-control:hover {
@@ -454,7 +520,7 @@
             border: 1px solid #3a3a3a;
             background: #0f0f0f;
             color: #e0e0e0;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
             transition: all 0.3s ease;
         }
 
@@ -468,17 +534,22 @@
             background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
             color: white;
             border: 1px solid #4a4a4a;
-            padding: 0.8rem 1.3rem;
+            padding: 0.8rem 1rem;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 3vw, 1.2rem);
             transition: all 0.3s ease;
+            touch-action: manipulation;
         }
 
         .mic-btn:hover {
             transform: scale(1.08);
             background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .mic-btn:active {
+            transform: scale(1.02);
         }
 
         .mic-btn.recording {
@@ -494,11 +565,13 @@
 
         .button-row {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
         .send-btn {
-            flex: 3;
+            flex: 2;
+            min-width: 150px;
             background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
             color: white;
             border: 1px solid #4a4a4a;
@@ -507,7 +580,8 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            touch-action: manipulation;
         }
 
         .send-btn:hover {
@@ -517,6 +591,10 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
         }
 
+        .send-btn:active {
+            transform: translateY(0);
+        }
+
         .send-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -524,6 +602,7 @@
 
         .clear-btn {
             flex: 1;
+            min-width: 100px;
             background: linear-gradient(135deg, #4a3a3a 0%, #3a2a2a 100%);
             color: white;
             border: 1px solid #5a4a4a;
@@ -532,7 +611,8 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            touch-action: manipulation;
         }
 
         .clear-btn:hover {
@@ -542,8 +622,12 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
         }
 
+        .clear-btn:active {
+            transform: translateY(0);
+        }
+
         .chat-container::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         .chat-container::-webkit-scrollbar-track {
@@ -563,14 +647,19 @@
         .footer {
             text-align: center;
             color: #6a6a6a;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
             margin-top: 3rem;
+            padding: 0 1rem;
+        }
+
+        .footer p {
+            margin: 0.3rem 0;
         }
 
         .loading {
             display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             border-top-color: white;
@@ -589,6 +678,7 @@
             margin: 1rem 0;
             display: none;
             border: 1px solid #3a4a3a;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
         }
 
         .success-message.show {
@@ -604,6 +694,7 @@
             margin: 1rem 0;
             display: none;
             border: 1px solid #4a3a3a;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
         }
 
         .error-message.show {
@@ -611,22 +702,64 @@
             animation: slideIn 0.5s ease-out;
         }
 
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .header-title {
-                font-size: 1.8rem;
-            }
-
+        /* Tablet Breakpoint (600px and up) */
+        @media (min-width: 600px) {
             body {
-                padding: 1rem;
+                padding: 1.5rem;
             }
 
-            .chat-bubble-user,
+            .header-container {
+                padding: 2rem;
+            }
+
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+
+            .result-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+            }
+
+            .chat-container {
+                padding: 1.5rem;
+                max-height: 500px;
+            }
+
+            .chat-bubble-user {
+                max-width: 70%;
+            }
+
             .chat-bubble-bot {
-                max-width: 85%;
+                max-width: 75%;
+            }
+
+            .info-toggle-btn {
+                width: auto;
+            }
+
+            .button-row {
+                flex-wrap: nowrap;
+            }
+        }
+
+        /* Desktop Breakpoint (1024px and up) */
+        @media (min-width: 1024px) {
+            body {
+                padding: 2rem;
+            }
+
+            .header-container {
+                margin-bottom: 2rem;
+            }
+
+            .form-grid {
+                margin-bottom: 2rem;
+            }
+
+            .result-card {
+                padding: 2rem;
             }
         }
     </style>
@@ -759,7 +892,7 @@
 
         <!-- Results -->
         <div class="result-card" id="resultCard">
-            <h3 style="margin-top:0; color:white;">📊 Assessment Results</h3>
+            <h3>📊 Assessment Results</h3>
             <div class="result-grid">
                 <div class="result-item">
                     <div class="result-item-label">Default Probability</div>
@@ -823,7 +956,7 @@
         let mediaRecorder = null;
         let audioChunks = [];
         let currentAudio = null;
-        let currentBotAudios = {}; // Store audio objects for each bot message
+        let currentBotAudios = {};
 
         // Generate UUID
         function generateUUID() {
@@ -1174,15 +1307,11 @@
         function clearChat() {
             document.getElementById('chatContainer').innerHTML = '';
             threadId = generateUUID();
-
-            // Stop all bot audios
-            Object.values(currentBotAudios).forEach(audio => audio.pause());
-            currentBotAudios = {};
         }
 
-        // Toggle microphone (STT)
+        // Toggle microphone
         async function toggleMicrophone() {
-            const btn = document.getElementById('micBtn');
+            const micBtn = document.getElementById('micBtn');
 
             if (!isRecording) {
                 try {
@@ -1195,35 +1324,32 @@
                     };
 
                     mediaRecorder.onstop = async () => {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                         await transcribeAudio(audioBlob);
-
-                        // Stop all tracks
                         stream.getTracks().forEach(track => track.stop());
                     };
 
                     mediaRecorder.start();
                     isRecording = true;
-                    btn.classList.add('recording');
-                    btn.textContent = '⏹️';
+                    micBtn.classList.add('recording');
+                    micBtn.textContent = '⏸️';
 
                 } catch (error) {
                     showError('❌ Microphone access denied: ' + error.message);
                 }
-
             } else {
                 mediaRecorder.stop();
                 isRecording = false;
-                btn.classList.remove('recording');
-                btn.textContent = '🎤';
+                micBtn.classList.remove('recording');
+                micBtn.textContent = '🎤';
             }
         }
 
-        // Transcribe audio (STT)
+        // Transcribe audio
         async function transcribeAudio(audioBlob) {
             try {
                 const formData = new FormData();
-                formData.append('file', audioBlob, 'audio.wav');
+                formData.append('audio', audioBlob, 'recording.webm');
 
                 const response = await fetch('https://junaid17-credit-risk-api.hf.space/stt', {
                     method: 'POST',
@@ -1233,17 +1359,12 @@
                 if (!response.ok) throw new Error(`STT Error: ${response.status}`);
 
                 const result = await response.json();
-                document.getElementById('chatInput').value = result.text || result.transcription || '';
+                document.getElementById('chatInput').value = result.transcription;
 
             } catch (error) {
                 showError('❌ Transcription failed: ' + error.message);
             }
         }
-
-        // Initialize
-        window.onload = () => {
-            updateLTI();
-        };
     </script>
 </body>
 </html>
