@@ -2,15 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RiskGuard AI: Credit Risk Modelling</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* --- RESET & BASIC SETUP --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Montserrat', 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -18,13 +20,16 @@
             color: #e0e0e0;
             min-height: 100vh;
             padding: 2rem;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
+            width: 100%;
         }
 
+        /* --- HEADER --- */
         .header-container {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
             padding: 2rem;
@@ -41,6 +46,7 @@
             font-weight: 700;
             margin: 0;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            line-height: 1.2;
         }
 
         .header-subtitle {
@@ -49,6 +55,7 @@
             margin-top: 0.5rem;
         }
 
+        /* --- ALERTS & INFO --- */
         .alert-banner {
             background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
             color: #e0e0e0;
@@ -59,6 +66,8 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.4;
         }
 
         .info-toggle-btn {
@@ -71,6 +80,7 @@
             cursor: pointer;
             margin-bottom: 1rem;
             transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .info-toggle-btn:hover {
@@ -83,7 +93,7 @@
         .info-box {
             background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
             color: #d0d0d0;
-            padding: 1rem;
+            padding: 1.5rem;
             border-radius: 10px;
             margin: 1rem 0;
             border-left: 4px solid #4a4a4a;
@@ -95,14 +105,21 @@
             animation: slideIn 0.5s ease-out;
         }
 
+        .info-box ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* --- FORMS & SECTIONS --- */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            /* Changed from 500px to 300px to better support tablets/small laptops */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
             gap: 2rem;
             margin-bottom: 2rem;
         }
@@ -120,11 +137,13 @@
             color: #f0f0f0;
             font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
         }
 
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
         .form-group label {
@@ -132,12 +151,13 @@
             margin-bottom: 0.5rem;
             color: #9a9a9a;
             font-size: 0.9rem;
+            font-weight: 600;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 0.8rem;
+            padding: 0.9rem; /* Larger touch target */
             border-radius: 8px;
             border: 1px solid #3a3a3a;
             background: #0f0f0f;
@@ -153,6 +173,7 @@
             box-shadow: 0 0 0 3px rgba(74, 74, 74, 0.2);
         }
 
+        /* --- METRICS & BUTTONS --- */
         .metric-card {
             background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
             padding: 1.2rem;
@@ -160,7 +181,7 @@
             text-align: center;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             border: 1px solid #3a3a3a;
         }
 
@@ -194,6 +215,10 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
             margin: 2rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .analyze-btn:hover {
@@ -206,8 +231,10 @@
         .analyze-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+            transform: none;
         }
 
+        /* --- RESULTS AREA --- */
         .result-card {
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
             padding: 2rem;
@@ -225,7 +252,7 @@
 
         .result-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.5rem;
             margin-top: 1rem;
         }
@@ -236,6 +263,7 @@
             border-radius: 12px;
             backdrop-filter: blur(10px);
             border: 1px solid #3a3a3a;
+            text-align: center; /* Better for mobile */
         }
 
         .result-item-label {
@@ -249,6 +277,7 @@
             font-size: 1.8rem;
             font-weight: 700;
             color: #e0e0e0;
+            word-wrap: break-word;
         }
 
         .advisor-box {
@@ -261,18 +290,24 @@
             border: 1px solid #3a3a3a;
         }
 
+        .advisor-box p {
+            line-height: 1.6;
+            margin-top: 0.5rem;
+        }
+
         .audio-controls {
             display: flex;
             gap: 1rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             align-items: center;
+            flex-wrap: wrap; /* Allow wrapping */
         }
 
         .audio-btn {
             background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
             color: white;
             border: 1px solid #5a5a5a;
-            padding: 0.7rem 1.5rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
@@ -280,6 +315,8 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            min-width: 140px;
+            justify-content: center;
         }
 
         .audio-btn:hover {
@@ -291,6 +328,7 @@
         .audio-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
         .audio-btn.stop {
@@ -298,6 +336,7 @@
             border-color: #6a6a6a;
         }
 
+        /* --- CHAT SECTION --- */
         .chat-section {
             margin-top: 2rem;
             display: none;
@@ -311,10 +350,10 @@
             background: #0f0f0f;
             padding: 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
             max-height: 500px;
             overflow-y: auto;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             border: 1px solid #2a2a2a;
         }
 
@@ -324,11 +363,12 @@
             padding: 12px 18px;
             border-radius: 18px 18px 4px 18px;
             margin: 8px 0 8px auto;
-            max-width: 70%;
+            max-width: 80%; /* Increased for better mobile view */
             text-align: right;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             animation: slideInRight 0.3s ease-out;
             border: 1px solid #4a4a4a;
+            word-wrap: break-word;
         }
 
         .chat-bubble-bot {
@@ -338,11 +378,12 @@
             padding: 12px 18px;
             border-radius: 18px 18px 18px 4px;
             margin: 8px auto 8px 0;
-            max-width: 75%;
+            max-width: 85%; /* Increased for better mobile view */
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             animation: slideInLeft 0.3s ease-out;
             position: relative;
-            padding-bottom: 3rem;
+            padding-bottom: 3.5rem;
+            word-wrap: break-word;
         }
 
         .chat-bubble-thinking {
@@ -352,7 +393,7 @@
             padding: 12px 18px;
             border-radius: 18px 18px 18px 4px;
             margin: 8px auto 8px 0;
-            max-width: 75%;
+            max-width: 85%;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             animation: slideInLeft 0.3s ease-out;
             display: flex;
@@ -384,23 +425,12 @@
             animation: bounce 1.4s infinite ease-in-out both;
         }
 
-        .dot:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-
-        .dot:nth-child(2) {
-            animation-delay: -0.16s;
-        }
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
 
         @keyframes bounce {
-            0%, 80%, 100% {
-                transform: scale(0);
-                opacity: 0.5;
-            }
-            40% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
         }
 
         .tts-control {
@@ -411,7 +441,7 @@
             border: 1px solid #4a4a4a;
             color: #d0d0d0;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
             padding: 0.4rem 0.8rem;
             border-radius: 8px;
             transition: all 0.3s ease;
@@ -424,38 +454,25 @@
             background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
             border-color: #5a5a5a;
             transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .tts-control:active {
-            transform: translateY(0);
-        }
-
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
         }
 
         .chat-input-container {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.8rem;
             margin-bottom: 1rem;
+            align-items: center;
         }
 
         .chat-input {
             flex: 1;
-            padding: 0.8rem;
+            padding: 1rem;
             border-radius: 10px;
             border: 1px solid #3a3a3a;
             background: #0f0f0f;
             color: #e0e0e0;
             font-size: 1rem;
             transition: all 0.3s ease;
+            min-width: 0; /* Prevents flex overflow */
         }
 
         .chat-input:focus {
@@ -468,15 +485,21 @@
             background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
             color: white;
             border: 1px solid #4a4a4a;
-            padding: 0.8rem 1.3rem;
+            padding: 0;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             border-radius: 10px;
             cursor: pointer;
             font-size: 1.2rem;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
         .mic-btn:hover {
-            transform: scale(1.08);
+            transform: scale(1.05);
             background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
@@ -497,74 +520,61 @@
             gap: 1rem;
         }
 
-        .send-btn {
-            flex: 3;
+        .send-btn, .clear-btn {
             background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
             color: white;
             border: 1px solid #4a4a4a;
-            padding: 0.9rem 1.5rem;
+            padding: 1rem 1.5rem;
             border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
             font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .send-btn { flex: 3; }
+        .clear-btn { 
+            flex: 1; 
+            background: linear-gradient(135deg, #4a3a3a 0%, #3a2a2a 100%);
+            border-color: #5a4a4a;
         }
 
         .send-btn:hover {
             transform: translateY(-2px);
-            border-color: #5a5a5a;
             background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #5a4a4a 0%, #4a3a3a 100%);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
         }
 
         .send-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
-        .clear-btn {
-            flex: 1;
-            background: linear-gradient(135deg, #4a3a3a 0%, #3a2a2a 100%);
-            color: white;
-            border: 1px solid #5a4a4a;
-            padding: 0.9rem 1.5rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
+        /* --- SCROLLBAR --- */
+        .chat-container::-webkit-scrollbar { width: 8px; }
+        .chat-container::-webkit-scrollbar-track { background: #0a0a0a; border-radius: 10px; }
+        .chat-container::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 10px; }
+        .chat-container::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
 
-        .clear-btn:hover {
-            transform: translateY(-2px);
-            border-color: #6a5a5a;
-            background: linear-gradient(135deg, #5a4a4a 0%, #4a3a3a 100%);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-        }
-
-        .chat-container::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .chat-container::-webkit-scrollbar-track {
-            background: #0a0a0a;
-            border-radius: 10px;
-        }
-
-        .chat-container::-webkit-scrollbar-thumb {
-            background: #3a3a3a;
-            border-radius: 10px;
-        }
-
-        .chat-container::-webkit-scrollbar-thumb:hover {
-            background: #4a4a4a;
-        }
-
+        /* --- FOOTER & UTILS --- */
         .footer {
             text-align: center;
             color: #6a6a6a;
             font-size: 0.9rem;
             margin-top: 3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
         }
 
         .loading {
@@ -577,78 +587,145 @@
             animation: spin 1s ease-in-out infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .success-message, .error-message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            display: none;
+            line-height: 1.4;
         }
 
         .success-message {
             background: linear-gradient(135deg, #2a3a2a 0%, #1a2a1a 100%);
             color: #b0d0b0;
-            padding: 1rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-            display: none;
             border: 1px solid #3a4a3a;
-        }
-
-        .success-message.show {
-            display: block;
-            animation: slideIn 0.5s ease-out;
         }
 
         .error-message {
             background: linear-gradient(135deg, #3a2a2a 0%, #2a1a1a 100%);
             color: #d0b0b0;
-            padding: 1rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-            display: none;
             border: 1px solid #4a3a3a;
         }
 
-        .error-message.show {
+        .success-message.show, .error-message.show {
             display: block;
             animation: slideIn 0.5s ease-out;
         }
 
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* --- MOBILE RESPONSIVENESS (The Key Fixes) --- */
+        @media (max-width: 992px) {
+            .container { padding: 0; }
+        }
+
         @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
+            body {
+                padding: 1rem 0.5rem; /* Less padding on mobile */
+            }
+
+            .header-container {
+                padding: 1.5rem 1rem;
+                margin-bottom: 1.5rem;
             }
 
             .header-title {
                 font-size: 1.8rem;
             }
 
-            body {
-                padding: 1rem;
+            /* Single column for forms on mobile */
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
 
-            .chat-bubble-user,
-            .chat-bubble-bot {
-                max-width: 85%;
+            .section-card {
+                padding: 1.25rem;
+            }
+
+            .metric-value {
+                font-size: 1.8rem;
+            }
+
+            .result-card {
+                padding: 1.5rem 1rem;
+            }
+
+            /* Stack audio controls */
+            .audio-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .audio-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Stack Chat Buttons */
+            .button-row {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .send-btn, .clear-btn {
+                width: 100%;
+                flex: auto;
+            }
+
+            /* Prevent auto-zoom on iOS by using 16px font size */
+            .form-group input, 
+            .form-group select, 
+            .chat-input {
+                font-size: 16px; 
+            }
+            
+            .chat-bubble-user, .chat-bubble-bot {
+                max-width: 90%;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 1.5rem;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr; /* Stack results vertically on very small screens */
+            }
+
+            .info-toggle-btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .chat-container {
+                padding: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header-container">
             <h1 class="header-title">🛡️ RiskGuard AI</h1>
             <p class="header-subtitle">Advanced AI-Powered Credit Risk Assessment Platform</p>
         </div>
 
-        <!-- Alert Banner -->
         <div class="alert-banner">
-            ⚠️ <strong>Note:</strong> First request may take up to 30-60 seconds due to (API cold start).
+            <div>⚠️</div>
+            <div><strong>Note:</strong> First request may take up to 30-60 seconds due to (API cold start).</div>
         </div>
 
-        <!-- Info Toggle -->
         <button class="info-toggle-btn" onclick="toggleInfo()">ℹ️ How It Works</button>
 
         <div class="info-box" id="infoBox">
             <h4>📊 About RiskGuard AI</h4>
+            <br>
             <p><strong>What we analyze:</strong></p>
             <ul>
                 <li>Personal financial profile and credit history</li>
@@ -665,11 +742,9 @@
             </ul>
         </div>
 
-        <!-- Messages -->
         <div class="success-message" id="successMessage"></div>
         <div class="error-message" id="errorMessage"></div>
 
-        <!-- Input Form -->
         <div class="form-grid">
             <div class="section-card">
                 <div class="section-title">👤 Personal & Loan Information</div>
@@ -752,14 +827,12 @@
             </div>
         </div>
 
-        <!-- Analyze Button -->
         <button class="analyze-btn" id="analyzeBtn" onclick="analyzeCredit()">
             🔍 Analyze Credit Risk
         </button>
 
-        <!-- Results -->
         <div class="result-card" id="resultCard">
-            <h3 style="margin-top:0; color:white;">📊 Assessment Results</h3>
+            <h3 style="margin-top:0; color:white; font-size: 1.5rem; margin-bottom: 1rem;">📊 Assessment Results</h3>
             <div class="result-grid">
                 <div class="result-item">
                     <div class="result-item-label">Default Probability</div>
@@ -776,7 +849,7 @@
             </div>
 
             <div class="advisor-box">
-                <h4>🤖 AI Credit Advisor Insights</h4>
+                <h4 style="font-size: 1.2rem;">🤖 AI Credit Advisor Insights</h4>
                 <p id="advisorText">--</p>
                 <div class="audio-controls">
                     <button class="audio-btn" id="playAdvisorBtn" onclick="playAdvisorAudio()" disabled>
@@ -789,7 +862,6 @@
             </div>
         </div>
 
-        <!-- Chat Section -->
         <div class="chat-section section-card" id="chatSection">
             <div class="section-title">💬 Interactive Loan Chat Assistant</div>
 
@@ -808,10 +880,9 @@
             </div>
         </div>
 
-        <!-- Footer -->
         <div class="footer">
             <p>🛡️ RiskGuard AI © 2025 | Powered by Advanced Machine Learning</p>
-            <p style="font-size: 0.8rem;">For demonstration purposes only. Not financial advice.</p>
+            <p style="font-size: 0.8rem; margin-top: 5px;">For demonstration purposes only. Not financial advice.</p>
         </div>
     </div>
 
