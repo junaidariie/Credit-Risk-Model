@@ -7,7 +7,7 @@
 ## 🔗 Live Application
 
 🌍 **Frontend (GitHub Pages)**
-👉 [https://junaidariie.github.io/Credit-Risk-Model/](https://junaidariie.github.io/Credit-Risk-Model/)
+👉 https://junaidariie.github.io/Credit-Risk-Model/
 
 🚀 **Backend API (FastAPI on Hugging Face Spaces)**
 👉 Deployed with real-time inference & streaming support
