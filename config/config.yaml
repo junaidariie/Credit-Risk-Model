@@ -1,0 +1,26 @@
+data:
+  customers_path: data/raw/customers.csv
+  loans_path: data/raw/loans.csv
+  bureau_path: data/raw/bureau_data.csv
+  processed_path: data/processed/processed.csv
+  target: default
+
+training:
+  test_size: 0.25
+  random_state: 42
+
+model:
+  params:
+    penalty: "l2"
+    C: 1.0
+    solver: "liblinear"
+    max_iter: 1000
+    n_jobs: 1
+
+
+artifacts:
+  model_dir: models/
+  metrics_path: models/metrics.json
+
+drift:
+  report_path: models/data_drift_report.html
