@@ -129,8 +129,6 @@ credit-risk-cmplt/
 └── README.md
 ```
 
-This structure mirrors **real MLOps-style pipelines** used in companies.
-
 ---
 
 ## 📊 Dataset Overview
@@ -160,8 +158,6 @@ Implemented in `src/preprocessing.py`:
   * `avg_dpd_per_delinquency`
 * One-hot encoding
 * Column alignment for inference
-
-All preprocessing logic is **shared between training & inference** (no duplication).
 
 ---
 
@@ -254,8 +250,6 @@ python tests/test_evaluation.py
 python tests/test_full_pipeline.py
 ```
 
-All tests are currently **passing**.
-
 ---
 
 ## 🛠️ Tech Stack
@@ -304,5 +298,3 @@ RiskGuard AI is intentionally engineered to show:
 * Scorecard logic
 * AI integration
 * Testing discipline
-
-This is the level of structure expected in **international ML engineering roles**.
