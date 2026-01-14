@@ -1,4 +1,4 @@
-<img width="1209" height="864" alt="image" src="https://github.com/user-attachments/assets/95d8744a-57a1-4fd1-ae86-01a6f33ea0c6" /># 🛡️ RiskGuard AI
+## 🛡️ RiskGuard AI
 
 ### Production-Grade Credit Risk Engine + AI Advisory System
 
