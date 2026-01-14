@@ -4,14 +4,16 @@ from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 import os
 
-from prediction_helper import predict
+from inference.predictor import CreditRiskPredictor
 from advisor_bot import generate_advice
 from chatbot_advisor import ask_chatbot
 from utility import STT, TTS
 
-app = FastAPI()
 
-# ---------------- CORS ---------------- #
+# ================== APP INIT ================== #
+
+app = FastAPI(title="RiskGuard AI - Credit Risk Engine")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,7 +22,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ---------------- MODELS ---------------- #
+# ================== LOAD MODEL ON START ================== #
+
+predictor = CreditRiskPredictor()
+
+# ================== SCHEMAS ================== #
 
 class CreditRiskInput(BaseModel):
     age: int
@@ -56,36 +62,21 @@ class TTSRequest(BaseModel):
     text: str
 
 
-# ---------------- BASIC ROUTES ---------------- #
+# ================== HEALTH ================== #
 
 @app.get("/")
 def root():
-    return {"message": "Hello world!!"}
+    return {"status": "RiskGuard AI API is running."}
 
 
-@app.get("/home")
-def home():
-    return {"message": "Credit Risk API is running."}
-
-
-# ---------------- CREDIT RISK ---------------- #
+# ================== CREDIT RISK ================== #
 
 @app.post("/predict_credit_risk", response_model=CreditRiskOutput)
 def predict_credit_risk(input_data: CreditRiskInput):
     try:
-        probability, credit_score, rating = predict(
-            input_data.age,
-            input_data.income,
-            input_data.loan_amount,
-            input_data.loan_tenure_months,
-            input_data.avg_dpd_per_delinquency,
-            input_data.delinquency_ratio,
-            input_data.credit_utilization_ratio,
-            input_data.num_open_accounts,
-            input_data.residence_type,
-            input_data.loan_purpose,
-            input_data.loan_type
-        )
+        input_dict = input_data.dict()
+
+        probability, credit_score, rating = predictor.predict(input_dict)
 
         advisor_reply = generate_advice(
             probability=probability,
@@ -104,7 +95,7 @@ def predict_credit_risk(input_data: CreditRiskInput):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# ---------------- CHAT STREAM ---------------- #
+# ================== CHAT STREAM ================== #
 
 @app.post("/chat")
 async def chat(message_data: ChatMessage):
@@ -123,7 +114,7 @@ async def chat(message_data: ChatMessage):
     return StreamingResponse(event_generator(), media_type="text/plain")
 
 
-# ---------------- TTS ---------------- #
+# ================== TTS ================== #
 
 @app.post("/tts")
 async def generate_tts(request: TTSRequest):
@@ -146,7 +137,7 @@ async def generate_tts(request: TTSRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# ---------------- STT ---------------- #
+# ================== STT ================== #
 
 @app.post("/stt")
 async def transcribe_audio(file: UploadFile = File(...)):
@@ -154,4 +145,3 @@ async def transcribe_audio(file: UploadFile = File(...)):
         return await STT(file)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
