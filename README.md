@@ -16,8 +16,8 @@
 ## High-Level Architecture Diagram (Riskguard  AI)
 
                         ┌────────────────────────────┐
-                        │        Frontend UI          │
-                        │ (Form + Results + Chat UI)  │
+                        │        Frontend UI         │
+                        │ (Form + Results + Chat UI) │
                         └──────────────┬─────────────┘
                                        │
                                        ▼
