@@ -1,20 +1,22 @@
-# 🛡️ RiskGuard AI
+<img width="1209" height="864" alt="image" src="https://github.com/user-attachments/assets/95d8744a-57a1-4fd1-ae86-01a6f33ea0c6" /># 🛡️ RiskGuard AI
 
-### Intelligent Credit Risk Modeling & AI Advisory System
+### Production-Grade Credit Risk Engine + AI Advisory System
 
 ---
 
 ## 🔗 Live Application
 
 🌍 **Frontend (GitHub Pages)**
-👉 https://junaidariie.github.io/Credit-Risk-Model/
+👉 [https://junaidariie.github.io/Credit-Risk-Model/](https://junaidariie.github.io/Credit-Risk-Model/)
 
 🚀 **Backend API (FastAPI on Hugging Face Spaces)**
-👉 Deployed with real-time inference & streaming support
+👉 Deployed with real-time inference, streaming responses, and AI advisory
 
 ---
-## High-Level Architecture Diagram (Riskguard  AI)
 
+## 🧭 High-Level Architecture (RiskGuard AI)
+
+```
                         ┌────────────────────────────┐
                         │        Frontend UI         │
                         │ (Form + Results + Chat UI) │
@@ -45,180 +47,242 @@
     │ Feature Pipeline │     │  TTS Engine          │   │  TTS Engine          │
     │ (preprocess, FE) │     │ (Text → Speech)      │   │ (Text → Speech)      │
     └──────────────────┘     └──────────────────────┘   └──────────────────────┘
-    
-
-## 🚀 Project Overview
-
-**RiskGuard AI** is an end-to-end **AI-powered credit risk assessment and advisory system** designed to simulate how modern financial institutions evaluate loan applications.
-
-The platform integrates:
-
-* Machine learning–based credit risk prediction
-* Intelligent scoring and decision logic
-* An AI-powered conversational advisor
-* Speech-to-text (STT) and text-to-speech (TTS) interaction
-* Real-time streaming responses
-
-The system is designed to feel like a **real-world fintech decision engine**, combining analytics, explainability, and conversational intelligence.
+```
 
 ---
 
-## 🎯 Key Features
+## 🚀 Project Overview
 
-| Feature                         | Description                                                     |
-| ------------------------------- | --------------------------------------------------------------- |
-| 📊 **Credit Risk Prediction**   | Machine learning model predicts default probability             |
-| 🧠 **Credit Scoring Engine**    | Converts predictions into interpretable risk scores             |
-| 🏦 **Decision Logic**           | Produces approval, conditional, or rejection decisions          |
-| 🤖 **AI Financial Advisor**     | Provides human-like explanations and recommendations            |
-| 💬 **Conversational Chatbot**   | Users can ask follow-up questions in natural language           |
-| 🧷 **Context Memory**           | Maintains conversation context using LangGraph                  |
-| 🔊 **Text-to-Speech (TTS)**     | Converts AI responses into natural speech                       |
-| 🎙️ **Speech-to-Text (STT)**    | Allows voice-based user interaction                             |
-| 🌐 **Live Web Search (Tavily)** | Enhances chatbot responses with up-to-date information          |
-| ⚡ **Streaming Responses**       | Real-time token streaming from the backend                      |
-| 🎨 **Modern UI**                | Clean, responsive interface built using AI-assisted HTML/CSS/JS |
+**RiskGuard AI** is an end-to-end, production-style **credit risk decisioning platform** that simulates how modern banks and fintech companies evaluate loan applications.
+
+It combines:
+
+* **Machine Learning risk modeling**
+* **Scorecard-based credit scoring logic**
+* **Config-driven data pipelines**
+* **AI-powered advisory (LLM)**
+* **Conversational chatbot with memory**
+* **Speech-to-Text (STT) & Text-to-Speech (TTS)**
+* **Streaming real-time responses**
+
+This project is intentionally built to resemble **real enterprise ML architecture**, not notebook-style demos.
+
+---
+
+## 🎯 Core Capabilities
+
+| Capability                    | Description                                               |
+| ----------------------------- | --------------------------------------------------------- |
+| 📊 **Credit Risk Prediction** | Logistic Regression model predicts probability of default |
+| 🧮 **Scorecard Engine**       | Converts probability into credit score (300–900 scale)    |
+| 🏷️ **Risk Rating**           | Buckets customers into Poor / Average / Good / Excellent  |
+| 🤖 **AI Advisor (LLM)**       | Explains decisions and gives improvement guidance         |
+| 💬 **Conversational Chatbot** | Follow-up questions with memory & context                 |
+| 🔊 **Text-to-Speech (TTS)**   | Converts insights into natural voice                      |
+| 🎙️ **Speech-to-Text (STT)**  | Voice input support                                       |
+| ⚡ **Streaming Responses**     | Token-level streaming from backend                        |
+| 🧠 **LangGraph Memory**       | Stateful conversations                                    |
+| 🌐 **Tavily Web Search**      | Live knowledge augmentation                               |
+
+---
+
+## 🗂️ Production-Grade Project Structure
+
+```
+credit-risk-cmplt/
+│
+├── config/
+│   └── config.yaml                # Central config (paths, params, model settings)
+│
+├── data/
+│   └── raw/                        # Raw dataset (CSV)
+│
+├── src/
+│   ├── ingestion.py                # Data loading
+│   ├── preprocessing.py            # Cleaning + feature engineering
+│   ├── train.py                    # Training pipeline + versioning
+│   ├── evaluate.py                 # Model evaluation (AUC, metrics)
+│   └── utils.py                    # Config loader, versioning utilities
+│
+├── inference/
+│   └── predictor.py                # Inference logic (scorecard + model)
+│
+├── models/                         # Versioned models, scalers, columns
+│   ├── credit_model_*.pkl
+│   ├── scaler_*.pkl
+│   └── columns_*.pkl
+│
+├── tests/                          # End-to-end & unit tests
+│   ├── test_ingestion.py
+│   ├── test_preprocessing.py
+│   ├── test_training.py
+│   ├── test_evaluation.py
+│   └── test_full_pipeline.py
+│
+├── advisor_bot.py                  # One-time AI insight generator
+├── chatbot_advisor.py              # Conversational AI assistant
+├── utility.py                      # STT & TTS utilities
+├── app.py                          # FastAPI application
+├── index.html                      # Frontend UI
+├── Dockerfile                      # HF Spaces deployment
+├── requirements.txt
+└── README.md
+```
+
+This structure mirrors **real MLOps-style pipelines** used in companies.
 
 ---
 
 ## 📊 Dataset Overview
 
-* **Size:** 50,000+ customer records
-* **Target Variable:** `default` (binary classification)
-* **Feature Categories:**
+* **Size:** 50,000+ records
+* **Target:** `default` (0 = good, 1 = default)
+* **Feature Domains:**
 
-  * Credit utilization & repayment behavior
-  * Income & employment details
+  * Credit utilization
+  * Delinquency behavior
+  * Income & employment
   * Loan characteristics
-  * Demographic attributes
+  * Demographics
 
 ---
 
-## 🧹 Data Preprocessing
+## 🧹 Data Preprocessing & Feature Engineering
+
+Implemented in `src/preprocessing.py`:
 
 * Missing value handling
-* Outlier treatment (Winsorization)
-* Categorical encoding
-* Min–Max normalization
-* Feature selection using:
+* Business rule filtering
+* Derived features:
 
-  * Information Value (IV)
-  * Variance Inflation Factor (VIF)
-  * Domain-driven filtering
+  * `loan_to_income`
+  * `delinquency_ratio`
+  * `avg_dpd_per_delinquency`
+* One-hot encoding
+* Column alignment for inference
+
+All preprocessing logic is **shared between training & inference** (no duplication).
+
+---
+
+## 🏗️ Training Pipeline (Config-Driven)
+
+Implemented in `src/train.py`:
+
+* Config loaded from `config/config.yaml`
+* Steps:
+
+  1. Ingestion
+  2. Preprocessing
+  3. Encoding
+  4. Scaling (MinMaxScaler)
+  5. Class imbalance handling (SMOTETomek)
+  6. Logistic Regression training
+  7. **Automatic versioning** of:
+
+     * model
+     * scaler
+     * columns
+
+Each training run creates timestamped artifacts.
 
 ---
 
 ## 📈 Model Performance
 
-| Metric               | Score |
-| -------------------- | ----- |
-| **AUC**              | 0.98  |
-| **Gini Coefficient** | 0.96  |
-| **KS Statistic**     | 48%   |
+| Metric   | Value |
+| -------- | ----- |
+| **AUC**  | ~0.99 |
+| **Gini** | ~0.98 |
+| **KS**   | ~48%  |
 
-Additional evaluation includes:
-
-* ROC Curve
-* Confusion Matrix
-* Decile Lift Analysis
+Evaluated via `src/evaluate.py`.
 
 ---
 
-## 🧠 AI Architecture
+## 🧠 Credit Scorecard Logic
 
-### 1️⃣ Credit Risk Model
+Implemented in `inference/predictor.py`:
 
-A supervised machine learning model trained on structured financial data to estimate default probability with high interpretability.
+```python
+score = 300 + (1 - PD) * 600
+```
 
----
+| Score Range | Rating    |
+| ----------- | --------- |
+| 300–500     | Poor      |
+| 500–650     | Average   |
+| 650–750     | Good      |
+| 750–900     | Excellent |
 
-### 2️⃣ AI Advisor (LLM-powered)
-
-Generates human-like explanations based on:
-
-* Model outputs
-* Risk category
-* Credit behavior
-
-It provides:
-
-* Decision justification
-* Improvement suggestions
-* Context-aware guidance
+This mimics **real banking scorecard systems**.
 
 ---
 
-### 3️⃣ Conversational Memory
+## 🤖 AI Advisory System
 
-Implemented using **LangGraph**, enabling:
+### 1️⃣ One-Time Advisor
 
-* Persistent conversational context
+* Generates explanation after prediction
+* Uses LLM + risk context
+
+### 2️⃣ Conversational Assistant
+
+* LangGraph-based memory
+* Stateful conversation
 * Follow-up reasoning
-* Stateful interactions
 
 ---
 
-### 4️⃣ Speech & Interaction Layer
+## 🔊 Voice & Interaction Layer
 
-* **Text-to-Speech (TTS):** Converts AI responses into natural voice
-* **Speech-to-Text (STT):** Enables voice-based user input
-* **Streaming responses:** Real-time conversational experience
+* **STT (Speech → Text)** via Whisper
+* **TTS (Text → Speech)** via Edge TTS
+* Integrated directly into FastAPI
 
 ---
 
-## 🧩 System Architecture
+## ⚙️ Testing (Enterprise Style)
 
+All core components are **individually and end-to-end tested**:
+
+```bash
+python tests/test_ingestion.py
+python tests/test_preprocessing.py
+python tests/test_training.py
+python tests/test_evaluation.py
+python tests/test_full_pipeline.py
 ```
-User
-  ↓
-Frontend (HTML / CSS / JS)
-  ↓
-FastAPI Backend
-  ├── Credit Risk Model
-  ├── Scoring Logic
-  ├── AI Advisor (LLM)
-  ├── Tavily Search (Live Knowledge)
-  ├── LangGraph Memory
-  ├── TTS / STT Engine
-  ↓
-Streaming Response → UI
-```
+
+All tests are currently **passing**.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer          | Technology                                 |
-| -------------- | ------------------------------------------ |
-| **Frontend**   | HTML, CSS, JavaScript (AI-assisted design) |
-| **Backend**    | FastAPI                                    |
-| **ML**         | Pandas, NumPy, Scikit-learn                |
-| **LLM**        | Groq (LLaMA 3.1) / gpt-4.1-nano            |
-| **Memory**     | LangGraph                                  |
-| **Search**     | Tavily API                                 |
-| **Speech**     | Edge TTS + Whisper (STT)                   |
-| **Deployment** | Hugging Face Spaces, GitHub Pages          |
-| **Secrets**    | `.env` & platform secrets                  |
+| Layer      | Tech                              |
+| ---------- | --------------------------------- |
+| Frontend   | HTML, CSS, JS                     |
+| Backend    | FastAPI                           |
+| ML         | Pandas, NumPy, Scikit-learn       |
+| LLM        | Groq (LLaMA 3.1), OpenAI          |
+| Memory     | LangGraph                         |
+| Search     | Tavily API                        |
+| Speech     | Whisper (STT), Edge TTS           |
+| Deployment | Hugging Face Spaces, GitHub Pages |
 
 ---
 
-## 🎯 Real-World Applications
+## 🎯 Real-World Relevance
 
-* Credit approval simulation
-* Fintech decision support systems
-* AI-driven financial assistants
-* Risk analysis training tools
-* Explainable AI demonstrations
+This project closely resembles:
 
----
+* Bank credit engines
+* Fintech underwriting systems
+* Risk analytics platforms
+* AI-powered financial advisors
 
-## 🚀 Future Enhancements
-
-* Emotion-aware voice synthesis
-* Multilingual support
-* Real-time speech streaming
-* User profile personalization
-* Explainable AI dashboards (SHAP)
+It is designed to demonstrate **production thinking, not just ML modeling**.
 
 ---
 
@@ -226,10 +290,19 @@ Streaming Response → UI
 
 **Junaid**
 AI / Machine Learning Engineer
-Focused on building real-world, production-grade AI systems.
+Focused on building production-grade, real-world AI systems.
 
 ---
 
 ## ⭐ Final Note
 
-RiskGuard AI demonstrates how **machine learning, conversational AI, and real-time systems** can be combined to build intelligent, explainable financial applications used in modern fintech ecosystems.
+RiskGuard AI is intentionally engineered to show:
+
+* Proper data pipelines
+* Config-driven architecture
+* Versioned models
+* Scorecard logic
+* AI integration
+* Testing discipline
+
+This is the level of structure expected in **international ML engineering roles**.
