@@ -22,5 +22,3 @@ artifacts:
   model_dir: models/
   metrics_path: models/metrics.json
 
-drift:
-  report_path: models/data_drift_report.html
