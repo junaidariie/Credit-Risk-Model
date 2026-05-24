@@ -17,7 +17,7 @@
 ## 🎥 Demo Video
 
 📺 **Watch the full project demo on YouTube**
-👉 [YouTube Demo Link](YOUR_YOUTUBE_LINK_HERE)
+👉 [YouTube Demo Link]([VIDEO](https://youtu.be/xXmypfZw2xk))
 
 ---
 
