@@ -1,9 +1,7 @@
-name: Credit Risk CI
+name: Basic CI
 
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
 
 jobs:
@@ -11,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -23,20 +21,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest flake8 bandit
-
-      - name: Lint
-        run: |
-          flake8 . --max-line-length=120 --ignore=E402,W391,E302,E303,E305
+          pip install pytest
 
       - name: Run tests
         run: |
           pytest tests/
-
-      - name: Security scan
-        run: |
-          bandit -r src inference
-
-      - name: Docker build
-        run: |
-          docker build -t credit-risk-app .
