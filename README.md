@@ -256,7 +256,7 @@ All tests run automatically on every push — ensuring code quality and reliabil
 
 ✅ **CI Status: All tests passing**
 
-![CI Pipeline](assets/ci-pipeline.png)
+![CI Pipeline](assets/image.png)
 
 ---
 
