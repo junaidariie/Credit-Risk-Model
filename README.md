@@ -14,6 +14,13 @@
 
 ---
 
+## 🎥 Demo Video
+
+📺 **Watch the full project demo on YouTube**
+👉 [YouTube Demo Link](YOUR_YOUTUBE_LINK_HERE)
+
+---
+
 ## 🧭 High-Level Architecture (RiskGuard AI)
 
 ```
@@ -90,6 +97,10 @@ This project is intentionally built to resemble **real enterprise ML architectur
 
 ```
 credit-risk-cmplt/
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yaml                 # GitHub Actions CI pipeline
 │
 ├── config/
 │   └── config.yaml                # Central config (paths, params, model settings)
@@ -235,6 +246,17 @@ This mimics **real banking scorecard systems**.
 * **STT (Speech → Text)** via Whisper
 * **TTS (Text → Speech)** via Edge TTS
 * Integrated directly into FastAPI
+
+---
+
+## 🔄 CI/CD Pipeline
+
+This project includes a fully automated **GitHub Actions CI pipeline** (`.github/workflows/ci.yaml`).  
+All tests run automatically on every push — ensuring code quality and reliability.
+
+✅ **CI Status: All tests passing**
+
+![CI Pipeline](assets/ci-pipeline.png)
 
 ---
 
