@@ -199,7 +199,7 @@ Each training run creates timestamped artifacts.
 
 | Metric   | Value |
 | -------- | ----- |
-| **AUC**  | ~0.99 |
+| **AUC**  | ~0.98 |
 | **Gini** | ~0.98 |
 | **KS**   | ~85%  |
 
