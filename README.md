@@ -1,3 +1,5 @@
+![Banner](assets/Gemini_Generated_Image_71grri71grri71gr.png)
+
 ## 🛡️ RiskGuard AI
 
 ### Production-Grade Credit Risk Engine + AI Advisory System
