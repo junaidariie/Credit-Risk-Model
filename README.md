@@ -202,7 +202,7 @@ Each training run creates timestamped artifacts.
 | Metric   | Value |
 | -------- | ----- |
 | **AUC**  | ~0.98 |
-| **Gini** | ~0.98 |
+| **Gini** | ~0.96 |
 | **KS**   | ~85%  |
 
 Evaluated via `src/evaluate.py`.
