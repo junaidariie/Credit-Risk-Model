@@ -2,8 +2,49 @@ import numpy as np
 import pandas as pd
 
 
+def _normalize_categorical_values(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
+
+    category_mapping = {
+        'residence_type': {
+            'owned': 'Owned',
+            'mortgage': 'Mortgage',
+            'rented': 'Rented',
+        },
+        'loan_purpose': {
+            'auto': 'Auto',
+            'home': 'Home',
+            'personal': 'Personal',
+            'personaal': 'Personal',
+            'education': 'Education',
+        },
+        'loan_type': {
+            'secured': 'Secured',
+            'unsecured': 'Unsecured',
+        },
+    }
+
+    for column, mapping in category_mapping.items():
+        if column in df.columns:
+            def normalize_value(value):
+                if pd.isna(value):
+                    return value
+                text = str(value).strip()
+                if not text:
+                    return value
+                lowered = text.lower()
+                if lowered in mapping:
+                    return mapping[lowered]
+                return text.title()
+
+            df[column] = df[column].apply(normalize_value)
+
+    return df
+
+
 def clean_and_engineer(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
+    df = _normalize_categorical_values(df)
 
     if 'loan_purpose' in df.columns:
         df['loan_purpose'] = df['loan_purpose'].replace('Personaal', 'Personal')

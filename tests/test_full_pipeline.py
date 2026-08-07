@@ -7,8 +7,8 @@ from src.train import train_pipeline
 from src.evaluate import evaluate_model
 
 def test_full_pipeline():
-    model_path, scaler_path, columns_path = train_pipeline()
-    evaluate_model(model_path, scaler_path, columns_path)
+    artifact_path = train_pipeline()
+    evaluate_model(artifact_path)
 
     print("Full pipeline test passed end-to-end.")
 

@@ -12,8 +12,13 @@ langchain-core
 langchain-openai
 langchain-groq
 langgraph
-
+python-multipart
+langchain-community
+statsmodels
 pydantic
 python-dotenv
-
+optuna
 edge_tts
+matplotlib
+seaborn
+faster-whisper

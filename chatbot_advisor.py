@@ -1,14 +1,14 @@
 from langgraph.graph import StateGraph, START, END
 from typing import TypedDict, Annotated
 from langchain_core.messages import HumanMessage, BaseMessage, AIMessage, SystemMessage
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.tools import tool
 from dotenv import load_dotenv
-
+import os
 load_dotenv()
 
 # =====================================================
@@ -42,10 +42,7 @@ tools = [tavily_search]
 # =====================================================
 # LLM CONFIGURATION
 # =====================================================
-llm = ChatOpenAI(
-    model="gpt-4.1-nano",
-    streaming=True
-).bind_tools(tools)
+llm = ChatGroq(model="openai/gpt-oss-120b", api_key=os.getenv("GROQ_API_KEY"), streaming=True).bind_tools(tools)
 
 
 # =====================================================
@@ -63,12 +60,26 @@ SYSTEM_MESSAGE = SystemMessage(
         "Your purpose is to help users understand their financial situation in a clear, calm, and human way — "
         "similar to how a knowledgeable financial advisor would explain things during a conversation.\n\n"
 
+        "GROUNDING IN THE USER'S ACTUAL NUMBERS:\n"
+        "Each conversation includes the user's probability of default, credit score, and rating category. "
+        "Refer to these specific figures naturally when relevant (e.g. 'with a score of 612, you're in our Average band...') "
+        "rather than giving generic advice that could apply to anyone. Use this rating scale consistently — it is the same "
+        "scale the assessment itself uses, so don't contradict it:\n"
+        "- 300–499: Poor — approval is unlikely without changes\n"
+        "- 500–649: Average — approval is possible but often comes with stricter terms\n"
+        "- 650–749: Good — approval is likely on standard terms\n"
+        "- 750–900: Excellent — approval is very likely on the best terms\n\n"
+
         "When responding, follow these principles:\n"
         "- Speak naturally and conversationally (avoid sounding like documentation)\n"
         "- Structure responses logically, but avoid numbered or rigid lists unless clearly helpful\n"
         "- Keep explanations clear, friendly, and easy to follow\n"
         "- Use short paragraphs instead of long blocks of text\n"
-        "- Explain *why* something matters, not just *what* it is\n\n"
+        "- Explain *why* something matters, not just *what* it is\n"
+        "- Vary your phrasing and openers across a conversation — don't reuse the same stock sentence "
+        "(e.g. 'I understand your concern') more than once with the same user\n"
+        "- Light formatting (bold for a key number or term) is fine when it aids readability, but don't overuse "
+        "headers or bullet lists — most replies should read as plain, natural paragraphs\n\n"
 
         "Your role includes:\n"
         "- Helping users understand their credit risk and financial standing\n"
@@ -91,6 +102,7 @@ SYSTEM_MESSAGE = SystemMessage(
 
         "Ethical guidelines:\n"
         "- Do not provide legal, tax, or investment guarantees\n"
+        "- Do not promise a guaranteed loan approval or rejection — describe likelihood, not certainty\n"
         "- Avoid speculation or assumptions\n"
         "- Encourage informed and responsible decision-making\n\n"
 
@@ -160,11 +172,9 @@ def ask_chatbot(probability, credit_score, rating, advisor_reply, user_message, 
         user_message
     )
 
-    state = {"messages": [HumanMessage(content=formatted)]}
-    config = {"configurable": {"thread_id": thread_id}}
-
-    result = financial_advisor_chatbot.invoke(state, config=config)
-    return result["messages"][-1].content
+    messages = [SYSTEM_MESSAGE, HumanMessage(content=formatted)]
+    result = llm.invoke(messages)
+    return result.content
 
 
 # =====================================================
@@ -180,13 +190,16 @@ def ask_chatbot_stream(probability, credit_score, rating, advisor_reply, user_me
         user_message
     )
 
-    state = {"messages": [HumanMessage(content=formatted)]}
-    config = {"configurable": {"thread_id": thread_id}}
+    messages = [SYSTEM_MESSAGE, HumanMessage(content=formatted)]
 
-    for event in financial_advisor_chatbot.stream(state, config=config):
-        if "messages" in event:
-            msg = event["messages"][-1]
-            if isinstance(msg, AIMessage) and msg.content:
-                yield msg.content
+    for chunk in llm.stream(messages):
+        content = getattr(chunk, "content", "")
+        if isinstance(content, list):
+            content = "".join(
+                part.get("text", "") if isinstance(part, dict) else str(part)
+                for part in content
+            )
+        if content:
+            yield str(content)
 
 

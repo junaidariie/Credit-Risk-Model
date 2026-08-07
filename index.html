@@ -528,6 +528,168 @@ body {
 
 .footer { text-align: center; color: #52525b; font-size: 0.85rem; margin-top: 4rem; opacity: 0.8; }
 
+/* --- Icon buttons (replace emoji controls) --- */
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon-btn svg { display: block; }
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.icon-spin { animation: spin 0.8s linear infinite; }
+
+/* --- Settings toggle buttons (voice settings / STT options) --- */
+.settings-toggle-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    padding: 0.55rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.settings-toggle-btn:hover { color: white; border-color: var(--primary); background: rgba(59, 130, 246, 0.1); }
+
+.settings-panel {
+    background: #111;
+    border-left: 3px solid var(--primary);
+    padding: 1.25rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-top: 1rem;
+    display: none;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+.settings-panel.show { display: block; animation: slideDown 0.3s ease-out; }
+
+.settings-row { margin-bottom: 1rem; }
+.settings-row:last-child { margin-bottom: 0; }
+.settings-row label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+}
+.settings-row label span.value-badge { color: var(--primary); font-weight: 600; }
+
+.settings-row select {
+    width: 100%;
+    padding: 0.7rem;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.9rem;
+    font-family: inherit;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 1em;
+}
+
+.settings-row input[type="range"] {
+    width: 100%;
+    accent-color: var(--primary);
+    background: transparent;
+    cursor: pointer;
+}
+
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    cursor: pointer;
+}
+.checkbox-row:last-child { margin-bottom: 0; }
+.checkbox-row input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.lang-pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.8rem;
+    max-height: 160px;
+    overflow-y: auto;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--border-color);
+}
+.lang-pill {
+    background: #1f1f1f;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+}
+
+.mic-row { display: flex; align-items: center; gap: 0.4rem; }
+
+.mic-status {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+    min-height: 1.2rem;
+}
+.mic-status.listening { color: #fca5a5; }
+.mic-status.transcribing { color: var(--primary); }
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse-dot 1s infinite ease-in-out;
+}
+@keyframes pulse-dot { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+.lang-detected-badge {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #6ee7b7;
+    padding: 0.5rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    margin-top: 0.8rem;
+}
+.lang-detected-badge.show { display: inline-flex; }
+
+/* Rendered markdown inside advisor insights & chat bubbles */
+.md-content :is(h1, h2, h3, h4) { color: white; margin: 0.6rem 0 0.4rem; font-size: 1.05em; }
+.md-content h1:first-child, .md-content h2:first-child, .md-content h3:first-child { margin-top: 0; }
+.md-content p { margin: 0 0 0.6rem; }
+.md-content p:last-child { margin-bottom: 0; }
+.md-content ul, .md-content ol { margin: 0.4rem 0 0.6rem 1.3rem; }
+.md-content li { margin-bottom: 0.25rem; }
+.md-content strong { color: white; }
+.md-content code {
+    background: rgba(255,255,255,0.08);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
 /* --- MOBILE OPTIMIZATION --- */
 @media (max-width: 768px) {
     .header-title { font-size: 1.8rem; }
@@ -691,14 +853,31 @@ body {
         
         <div class="advisor-box">
             <h4 style="color:white; margin-bottom:0.5rem;">🤖 AI Credit Insights</h4>
-            <p id="advisorText">--</p>
+            <div id="advisorText" class="md-content">--</div>
             <div class="audio-controls">
                 <button class="audio-btn" id="playAdvisorBtn" onclick="playAdvisorAudio()" disabled>
-                    <span>🔊</span> Listen to Insights
+                    <span class="icon-btn" id="playAdvisorIcon"></span> Listen to Insights
                 </button>
                 <button class="audio-btn stop" id="stopAdvisorBtn" onclick="stopAudio()" style="display: none;">
-                    <span>⏹️</span> Stop
+                    <span class="icon-btn" id="stopAdvisorIcon"></span> Stop
                 </button>
+                <button class="settings-toggle-btn" onclick="toggleVoiceSettings()">
+                    <span class="icon-btn" id="settingsIcon"></span> Voice Settings
+                </button>
+            </div>
+            <div class="settings-panel" id="voiceSettingsPanel">
+                <div class="settings-row">
+                    <label>TTS Voice</label>
+                    <select id="ttsVoiceSelect"></select>
+                </div>
+                <div class="settings-row">
+                    <label>Speed <span class="value-badge" id="ttsRateValue">+0%</span></label>
+                    <input type="range" id="ttsRateSlider" min="-50" max="50" step="5" value="0">
+                </div>
+                <div class="settings-row">
+                    <label>Volume <span class="value-badge" id="ttsVolumeValue">+0%</span></label>
+                    <input type="range" id="ttsVolumeSlider" min="-50" max="50" step="5" value="0">
+                </div>
             </div>
         </div>
     </div>
@@ -715,7 +894,31 @@ body {
             <input type="text" class="chat-input" id="chatInput"
             placeholder="Type your question here..."
             onkeypress="handleChatKeypress(event)">
-            <button class="mic-btn" id="micBtn" onclick="toggleMicrophone()">🎤</button>
+            <div class="mic-row">
+                <button class="mic-btn" id="micBtn" onclick="toggleMicrophone()" title="Record voice message">
+                    <span class="icon-btn" id="micIcon"></span>
+                </button>
+                <button class="mic-btn" id="sttSettingsBtn" onclick="toggleSttOptions()" title="Voice input settings">
+                    <span class="icon-btn" id="sttSettingsIcon"></span>
+                </button>
+            </div>
+        </div>
+        <div class="mic-status" id="micStatusLabel"></div>
+        <div class="lang-detected-badge" id="detectedLangBadge"></div>
+
+        <div class="settings-panel" id="sttOptionsPanel">
+            <label class="checkbox-row">
+                <input type="checkbox" id="sttTranslation">
+                Translate speech to English
+            </label>
+            <label class="checkbox-row">
+                <input type="checkbox" id="sttLanguageDetection" checked>
+                Detect spoken language
+            </label>
+            <button class="settings-toggle-btn" type="button" onclick="toggleSupportedLanguages()" style="margin-top: 0.4rem;">
+                View supported languages
+            </button>
+            <div class="lang-pill-list" id="langPillList" style="display:none;"></div>
         </div>
         
         <div class="button-row">
@@ -738,6 +941,96 @@ let mediaRecorder = null;
 let audioChunks = [];
 let currentAudio = null;
 let currentBotAudios = {};
+let currentMediaSource = null;
+let availableTtsVoices = [];
+let supportedSttLanguages = null;
+const API_BASE_URL = 'http://localhost:8000';
+
+// Inline SVG icon set (replaces emoji controls with real line icons)
+const ICONS = {
+    mic: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>',
+    micRecording: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="currentColor"></rect></svg>',
+    speaker: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>',
+    stop: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="5" y="5" width="14" height="14" rx="2"></rect></svg>',
+    play: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>',
+    loading: '<svg class="icon-spin" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 a10 10 0 0 1 10 10"></path></svg>',
+    settings: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>'
+};
+
+// --- Lightweight Markdown rendering ---
+// The advisor/chatbot LLM responses come back as Markdown (headers, **bold**,
+// bullet lists, etc). The UI was dumping that raw text into .textContent, so
+// people saw literal "#" and "**" characters. These helpers render it as HTML
+// instead, without pulling in an external Markdown library.
+function escapeHtml(str) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+function renderInlineMarkdown(str) {
+    return str
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, '<em>$1</em>')
+        .replace(/(?<!_)_([^_\n]+)_(?!_)/g, '<em>$1</em>');
+}
+
+function renderMarkdown(raw) {
+    if (!raw) return '';
+    const lines = escapeHtml(raw).split('\n');
+    let html = '';
+    let listType = null;
+    let paragraph = [];
+
+    const flushParagraph = () => {
+        if (paragraph.length) {
+            html += `<p>${renderInlineMarkdown(paragraph.join(' '))}</p>`;
+            paragraph = [];
+        }
+    };
+    const closeList = () => {
+        if (listType) { html += `</${listType}>`; listType = null; }
+    };
+
+    for (const rawLine of lines) {
+        const line = rawLine.trim();
+
+        if (!line) { flushParagraph(); closeList(); continue; }
+
+        const header = line.match(/^(#{1,4})\s+(.*)$/);
+        if (header) {
+            flushParagraph(); closeList();
+            const level = header[1].length;
+            html += `<h${level}>${renderInlineMarkdown(header[2])}</h${level}>`;
+            continue;
+        }
+
+        const bullet = line.match(/^[-*]\s+(.*)$/);
+        if (bullet) {
+            flushParagraph();
+            if (listType !== 'ul') { closeList(); html += '<ul>'; listType = 'ul'; }
+            html += `<li>${renderInlineMarkdown(bullet[1])}</li>`;
+            continue;
+        }
+
+        const numbered = line.match(/^\d+[.)]\s+(.*)$/);
+        if (numbered) {
+            flushParagraph();
+            if (listType !== 'ol') { closeList(); html += '<ol>'; listType = 'ol'; }
+            html += `<li>${renderInlineMarkdown(numbered[1])}</li>`;
+            continue;
+        }
+
+        closeList();
+        paragraph.push(line);
+    }
+
+    flushParagraph();
+    closeList();
+    return html;
+}
 
 // Generate UUID
 function generateUUID() {
@@ -754,6 +1047,84 @@ function toggleInfo() {
     infoBox.classList.toggle('show');
 }
 
+// Apply static icons to buttons that start out idle
+function initIcons() {
+    document.getElementById('playAdvisorIcon').innerHTML = ICONS.speaker;
+    document.getElementById('stopAdvisorIcon').innerHTML = ICONS.stop;
+    document.getElementById('settingsIcon').innerHTML = ICONS.settings;
+    document.getElementById('micIcon').innerHTML = ICONS.mic;
+    document.getElementById('sttSettingsIcon').innerHTML = ICONS.settings;
+}
+
+// Toggle the TTS voice/speed/volume settings panel
+function toggleVoiceSettings() {
+    document.getElementById('voiceSettingsPanel').classList.toggle('show');
+}
+
+// Toggle the STT (translation / language detection) settings panel
+function toggleSttOptions() {
+    document.getElementById('sttOptionsPanel').classList.toggle('show');
+}
+
+// Load available TTS voices from /tts_available_voices and populate the select
+async function loadAvailableVoices() {
+    const select = document.getElementById('ttsVoiceSelect');
+    try {
+        const response = await fetch(`${API_BASE_URL}/tts_available_voices`);
+        if (!response.ok) throw new Error(`Voices Error: ${response.status}`);
+        const data = await response.json();
+        availableTtsVoices = data['Voices'] || [];
+
+        select.innerHTML = '';
+        availableTtsVoices.forEach(v => {
+            const option = document.createElement('option');
+            option.value = v.Voice;
+            option.textContent = `${v.Voice} (${v.Gender})`;
+            select.appendChild(option);
+        });
+
+        const defaultVoice = 'en-GB-SoniaNeural';
+        if (availableTtsVoices.some(v => v.Voice === defaultVoice)) {
+            select.value = defaultVoice;
+        }
+    } catch (error) {
+        select.innerHTML = '<option value="en-GB-SoniaNeural">en-GB-SoniaNeural (default)</option>';
+    }
+}
+
+// Load supported STT languages from /stt_supported_voices (fetched lazily, once)
+async function toggleSupportedLanguages() {
+    const list = document.getElementById('langPillList');
+    const isHidden = list.style.display === 'none';
+
+    if (!isHidden) {
+        list.style.display = 'none';
+        return;
+    }
+
+    list.style.display = 'flex';
+
+    if (supportedSttLanguages) return; // already loaded
+
+    list.innerHTML = '<span class="lang-pill">Loading…</span>';
+    try {
+        const response = await fetch(`${API_BASE_URL}/stt_supported_voices`);
+        if (!response.ok) throw new Error(`Languages Error: ${response.status}`);
+        const data = await response.json();
+        supportedSttLanguages = data['Supported Languages'] || [];
+
+        list.innerHTML = '';
+        supportedSttLanguages.forEach(lang => {
+            const pill = document.createElement('span');
+            pill.className = 'lang-pill';
+            pill.textContent = lang;
+            list.appendChild(pill);
+        });
+    } catch (error) {
+        list.innerHTML = '<span class="lang-pill">Failed to load languages</span>';
+    }
+}
+
 // Update loan-to-income ratio (LTI)
 function updateLTI() {
     const income = parseFloat(document.getElementById('income').value) || 1;
@@ -765,6 +1136,30 @@ function updateLTI() {
 // Event Listeners for LTI
 document.getElementById('income').addEventListener('input', updateLTI);
 document.getElementById('loanAmount').addEventListener('input', updateLTI);
+
+// Format a slider value as a signed percentage string, e.g. "+15%" / "-10%"
+function formatSignedPercent(value) {
+    const n = parseInt(value, 10);
+    return (n >= 0 ? '+' : '') + n + '%';
+}
+
+// Get the current TTS settings from the settings panel
+function getTtsSettings() {
+    const voiceSelect = document.getElementById('ttsVoiceSelect');
+    return {
+        voice: voiceSelect.value || 'en-GB-SoniaNeural',
+        rate: formatSignedPercent(document.getElementById('ttsRateSlider').value),
+        volume: formatSignedPercent(document.getElementById('ttsVolumeSlider').value)
+    };
+}
+
+// Event listeners for TTS rate/volume sliders (live value badges)
+document.getElementById('ttsRateSlider').addEventListener('input', (e) => {
+    document.getElementById('ttsRateValue').textContent = formatSignedPercent(e.target.value);
+});
+document.getElementById('ttsVolumeSlider').addEventListener('input', (e) => {
+    document.getElementById('ttsVolumeValue').textContent = formatSignedPercent(e.target.value);
+});
 
 // Show success message
 function showSuccess(message) {
@@ -830,7 +1225,7 @@ async function analyzeCredit() {
     };
 
     try {
-        const response = await fetch('https://junaid17-credit-risk-api.hf.space/predict_credit_risk', {
+        const response = await fetch(`${API_BASE_URL}/predict_credit_risk_stream`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -838,22 +1233,57 @@ async function analyzeCredit() {
 
         if (!response.ok) throw new Error(`API Error: ${response.status}`);
 
-        const result = await response.json();
-        analysisData = result;
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let streamedAdvisorText = '';
+        let resultPayload = {
+            probability: null,
+            credit_score: null,
+            rating: null,
+            advisor_response: ''
+        };
 
-        // Display results
-        document.getElementById('probability').textContent = (result.probability * 100).toFixed(2) + '%';
-        document.getElementById('creditScore').textContent = result.credit_score;
-        document.getElementById('rating').textContent = result.rating;
-        document.getElementById('advisorText').textContent = result.advisor_response;
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+                if (!line) continue;
+
+                if (line.startsWith('probability:')) {
+                    resultPayload.probability = parseFloat(line.replace('probability:', '').trim());
+                } else if (line.startsWith('credit_score:')) {
+                    resultPayload.credit_score = parseInt(line.replace('credit_score:', '').trim(), 10);
+                } else if (line.startsWith('rating:')) {
+                    resultPayload.rating = line.replace('rating:', '').trim();
+                } else if (line.startsWith('advisor:')) {
+                    streamedAdvisorText += line.replace('advisor:', '');
+                    resultPayload.advisor_response = streamedAdvisorText;
+                }
+            }
+
+            document.getElementById('probability').textContent = ((resultPayload.probability ?? 0) * 100).toFixed(2) + '%';
+            document.getElementById('creditScore').textContent = resultPayload.credit_score ?? '--';
+            document.getElementById('rating').textContent = resultPayload.rating ?? '--';
+            document.getElementById('advisorText').innerHTML = renderMarkdown(streamedAdvisorText);
+        }
+
+        analysisData = {
+            probability: resultPayload.probability ?? 0,
+            credit_score: resultPayload.credit_score ?? 0,
+            rating: resultPayload.rating ?? 'Unknown',
+            advisor_response: resultPayload.advisor_response
+        };
 
         document.getElementById('resultCard').classList.add('show');
         document.getElementById('chatSection').classList.add('show');
         document.getElementById('playAdvisorBtn').disabled = false;
 
         showSuccess('✅ Analysis Complete! You can now chat with the AI.');
-        
-        // Scroll to results
+
         document.getElementById('resultCard').scrollIntoView({behavior: "smooth"});
 
     } catch (error) {
@@ -864,6 +1294,58 @@ async function analyzeCredit() {
     }
 }
 
+// Request TTS audio and play it as it streams in, rather than waiting for
+// the whole clip to download. Falls back to buffered playback if the
+// browser can't do progressive MPEG playback via MediaSource.
+async function streamTtsAudio(text, { voice, rate, volume }) {
+    const response = await fetch(`${API_BASE_URL}/tts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, voice, rate, volume })
+    });
+
+    if (!response.ok) throw new Error(`TTS Error: ${response.status}`);
+
+    if (window.MediaSource && MediaSource.isTypeSupported('audio/mpeg') && response.body) {
+        const mediaSource = new MediaSource();
+        const audio = new Audio();
+        audio.src = URL.createObjectURL(mediaSource);
+
+        await new Promise((resolve, reject) => {
+            mediaSource.addEventListener('sourceopen', async () => {
+                try {
+                    const sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+                    const reader = response.body.getReader();
+
+                    const pump = async () => {
+                        const { done, value } = await reader.read();
+                        if (done) {
+                            if (mediaSource.readyState === 'open') mediaSource.endOfStream();
+                            return;
+                        }
+                        await new Promise((res) => {
+                            sourceBuffer.addEventListener('updateend', res, { once: true });
+                            sourceBuffer.appendBuffer(value);
+                        });
+                        pump();
+                    };
+
+                    pump();
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
+            }, { once: true });
+        });
+
+        return audio;
+    }
+
+    // Fallback: buffer the full (still chunked-over-the-wire) response first
+    const blob = await response.blob();
+    return new Audio(URL.createObjectURL(blob));
+}
+
 // Play advisor audio (TTS)
 async function playAdvisorAudio() {
     const text = document.getElementById('advisorText').textContent;
@@ -871,33 +1353,22 @@ async function playAdvisorAudio() {
     const stopBtn = document.getElementById('stopAdvisorBtn');
 
     playBtn.disabled = true;
-    playBtn.innerHTML = '⏳ Loading...';
+    playBtn.innerHTML = `<span class="icon-btn">${ICONS.loading}</span> Loading...`;
 
     try {
-        const response = await fetch('https://junaid17-credit-risk-api.hf.space/tts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text })
-        });
-
-        if (!response.ok) throw new Error(`TTS Error: ${response.status}`);
-
-        const blob = await response.blob();
-        const audioUrl = URL.createObjectURL(blob);
-
         if (currentAudio) {
             currentAudio.pause();
             currentAudio = null;
         }
 
-        currentAudio = new Audio(audioUrl);
+        currentAudio = await streamTtsAudio(text, getTtsSettings());
         currentAudio.play();
-        
+
         playBtn.style.display = 'none';
         stopBtn.style.display = 'flex';
 
         currentAudio.onended = () => {
-            playBtn.innerHTML = '<span>🔊</span> Listen to Insights';
+            playBtn.innerHTML = `<span class="icon-btn">${ICONS.speaker}</span> Listen to Insights`;
             playBtn.disabled = false;
             playBtn.style.display = 'flex';
             stopBtn.style.display = 'none';
@@ -906,7 +1377,7 @@ async function playAdvisorAudio() {
 
     } catch (error) {
         showError('❌ TTS failed: ' + error.message);
-        playBtn.innerHTML = '<span>🔊</span> Listen to Insights';
+        playBtn.innerHTML = `<span class="icon-btn">${ICONS.speaker}</span> Listen to Insights`;
         playBtn.disabled = false;
         playBtn.style.display = 'flex';
         stopBtn.style.display = 'none';
@@ -921,7 +1392,7 @@ function stopAudio() {
         const playBtn = document.getElementById('playAdvisorBtn');
         const stopBtn = document.getElementById('stopAdvisorBtn');
 
-        playBtn.innerHTML = '<span>🔊</span> Listen to Insights';
+        playBtn.innerHTML = `<span class="icon-btn">${ICONS.speaker}</span> Listen to Insights`;
         playBtn.disabled = false;
         playBtn.style.display = 'flex';
         stopBtn.style.display = 'none';
@@ -934,35 +1405,25 @@ async function playBotTTS(messageId, text, button) {
         if (currentBotAudios[messageId]) {
             currentBotAudios[messageId].pause();
             delete currentBotAudios[messageId];
-            button.innerHTML = '🔊 Play';
+            button.innerHTML = `<span class="icon-btn">${ICONS.play}</span> Play`;
             return;
         }
 
-        button.innerHTML = '⏳ Wait';
-        const response = await fetch('https://junaid17-credit-risk-api.hf.space/tts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text })
-        });
-
-        if (!response.ok) throw new Error(`TTS Error: ${response.status}`);
-
-        const blob = await response.blob();
-        const audioUrl = URL.createObjectURL(blob);
-        const audio = new Audio(audioUrl);
+        button.innerHTML = `<span class="icon-btn">${ICONS.loading}</span> Wait`;
+        const audio = await streamTtsAudio(text, getTtsSettings());
 
         currentBotAudios[messageId] = audio;
         audio.play();
-        button.innerHTML = '⏹️ Stop';
+        button.innerHTML = `<span class="icon-btn">${ICONS.stop}</span> Stop`;
 
         audio.onended = () => {
             delete currentBotAudios[messageId];
-            button.innerHTML = '🔊 Play';
+            button.innerHTML = `<span class="icon-btn">${ICONS.play}</span> Play`;
         };
 
     } catch (error) {
         showError('❌ TTS failed: ' + error.message);
-        button.innerHTML = '🔊 Play';
+        button.innerHTML = `<span class="icon-btn">${ICONS.play}</span> Play`;
     }
 }
 
@@ -991,7 +1452,7 @@ async function sendMessage() {
     };
 
     try {
-        const response = await fetch('https://junaid17-credit-risk-api.hf.space/chat', {
+        const response = await fetch(`${API_BASE_URL}/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -1019,7 +1480,7 @@ async function sendMessage() {
             }
 
             const textSpan = botBubble.querySelector('.bot-text');
-            textSpan.textContent = fullText;
+            textSpan.innerHTML = `<strong>🤖 Assistant:</strong> ${renderMarkdown(fullText)}`;
             container.scrollTop = container.scrollHeight;
         }
 
@@ -1036,17 +1497,19 @@ function addChatBubble(role, message) {
     bubble.className = role === 'user' ? 'chat-bubble-user' : 'chat-bubble-bot';
 
     if (role === 'user') {
-        bubble.innerHTML = `<strong>You:</strong> ${message}`;
+        bubble.innerHTML = `<strong>You:</strong> ${escapeHtml(message)}`;
     } else {
         const messageId = 'bot-' + Date.now();
         bubble.dataset.messageId = messageId;
-        const textSpan = document.createElement('span');
-        textSpan.className = 'bot-text';
-        textSpan.innerHTML = `<strong>🤖 Assistant:</strong> ${message}`;
+        // Rendered Markdown can include block elements (headers, lists), so this
+        // holds them in a <div> rather than a <span>.
+        const textSpan = document.createElement('div');
+        textSpan.className = 'bot-text md-content';
+        textSpan.innerHTML = `<strong>🤖 Assistant:</strong> ${renderMarkdown(message)}`;
         
         const ttsButton = document.createElement('button');
         ttsButton.className = 'tts-control';
-        ttsButton.innerHTML = '🔊 Play';
+        ttsButton.innerHTML = `<span class="icon-btn">${ICONS.play}</span> Play`;
         ttsButton.onclick = () => {
             const text = textSpan.textContent.replace('🤖 Assistant: ', '');
             playBotTTS(messageId, text, ttsButton);
@@ -1076,6 +1539,22 @@ function clearChat() {
     currentBotAudios = {};
 }
 
+// Update the small status line under the chat input ("Listening…" / "Transcribing…")
+function setMicStatus(state) {
+    const label = document.getElementById('micStatusLabel');
+    label.classList.remove('listening', 'transcribing');
+
+    if (state === 'listening') {
+        label.classList.add('listening');
+        label.innerHTML = '<span class="status-dot"></span> Listening…';
+    } else if (state === 'transcribing') {
+        label.classList.add('transcribing');
+        label.innerHTML = `<span class="icon-btn">${ICONS.loading}</span> Transcribing your words…`;
+    } else {
+        label.innerHTML = '';
+    }
+}
+
 // Toggle Microphone (STT)
 async function toggleMicrophone() {
     const btn = document.getElementById('micBtn');
@@ -1091,15 +1570,19 @@ async function toggleMicrophone() {
             };
 
             mediaRecorder.onstop = async () => {
+                setMicStatus('transcribing');
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 await transcribeAudio(audioBlob);
                 stream.getTracks().forEach(track => track.stop());
+                setMicStatus(null);
             };
 
             mediaRecorder.start();
             isRecording = true;
             btn.classList.add('recording');
-            btn.innerHTML = '⏹️';
+            btn.innerHTML = ICONS.micRecording;
+            document.getElementById('detectedLangBadge').classList.remove('show');
+            setMicStatus('listening');
 
         } catch (error) {
             showError('❌ Microphone access denied: ' + error.message);
@@ -1108,23 +1591,46 @@ async function toggleMicrophone() {
         mediaRecorder.stop();
         isRecording = false;
         btn.classList.remove('recording');
-        btn.innerHTML = '🎤';
+        btn.innerHTML = ICONS.mic;
     }
 }
 
 // Transcribe Audio
 async function transcribeAudio(audioBlob) {
     try {
+        const translation = document.getElementById('sttTranslation').checked;
+        const languageDetection = document.getElementById('sttLanguageDetection').checked;
+
         const formData = new FormData();
-        formData.append('file', audioBlob, 'audio.wav');
-        const response = await fetch('https://junaid17-credit-risk-api.hf.space/stt', {
+        // The backend's /stt endpoint reads the upload from a field named
+        // "file_path" (not "file") — must match the FastAPI param name.
+        formData.append('file_path', audioBlob, 'audio.wav');
+
+        const params = new URLSearchParams({
+            translation: translation,
+            language_detection: languageDetection
+        });
+
+        const response = await fetch(`${API_BASE_URL}/stt?${params.toString()}`, {
             method: 'POST',
             body: formData
         });
 
         if (!response.ok) throw new Error(`STT Error: ${response.status}`);
         const result = await response.json();
-        document.getElementById('chatInput').value = result.text || result.transcription || '';
+        // Backend returns { segments: [...] } (+ detected_language / language_probability
+        // when language_detection is on) rather than a single "text" field.
+        const transcript = (result.segments || []).join(' ').trim();
+        document.getElementById('chatInput').value = transcript;
+
+        const badge = document.getElementById('detectedLangBadge');
+        if (languageDetection && result.detected_language) {
+            const confidence = (result.language_probability * 100).toFixed(0);
+            badge.innerHTML = `🌐 Detected language: <strong>${escapeHtml(result.detected_language)}</strong> (${confidence}% confidence)`;
+            badge.classList.add('show');
+        } else {
+            badge.classList.remove('show');
+        }
 
     } catch (error) {
         showError('❌ Transcription failed: ' + error.message);
@@ -1134,6 +1640,8 @@ async function transcribeAudio(audioBlob) {
 // Initialize
 window.onload = () => {
     updateLTI();
+    initIcons();
+    loadAvailableVoices();
     console.log('🛡️ RiskGuard AI Initialized');
 };
 </script>
