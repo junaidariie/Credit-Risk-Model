@@ -8,8 +8,7 @@
 
 ## 🔗 Live Demo
 
-> 🚀 **[Try the Live App →](https://your-huggingface-space-url-here)**
-> *(Replace this link with your deployed Hugging Face Spaces URL)*
+> 🚀 **[Try the Live App →]([APP](https://junaidariie.github.io/Credit-Risk-Model/))**
 
 ---
 
