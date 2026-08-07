@@ -8,7 +8,7 @@
 
 ## 🔗 Live Demo
 
-> 🚀 **[Try the Live App →]([APP](https://junaidariie.github.io/Credit-Risk-Model/))**
+> 🚀 **[Try the Live App →](https://junaidariie.github.io/Credit-Risk-Model/)**
 
 ---
 
