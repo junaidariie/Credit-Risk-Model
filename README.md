@@ -8,7 +8,7 @@
 
 ## 🔗 Live Demo
 
-> 🚀 **[Try the Live App →](https://junaidariie.github.io/Credit-Risk-Model/)**
+> 🚀 **[Try the Live App →](https://cred-risk-model-frontend.vercel.app/auth)**
 
 ---
 
