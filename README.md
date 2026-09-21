@@ -182,6 +182,14 @@ Implemented in `backend/db/`:
 * **Auto-migration** — `Base.metadata.create_all()` runs on startup to create tables if they don't exist
 * **Default admin bootstrap** — On first startup, if no admin account exists, one is created from `ADMIN_USERNAME` / `ADMIN_PASSWORD` env vars
 
+### Cloud Database — Aiven for MySQL
+
+The production database is a **managed MySQL instance hosted on [Aiven](https://aiven.io)** — a fully managed cloud database platform. Aiven handles provisioning, backups, SSL, and high availability, so no self-managed database server is needed.
+
+* Connection is SSL-encrypted by default (Aiven enforces this)
+* The same `.env` variables are used — just swap `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, and `MYSQL_PASSWORD` with the values from the Aiven service overview
+* Locally, a local MySQL instance can be used with the same config structure
+
 ### Database Models
 
 **`users` table**
@@ -210,10 +218,18 @@ Implemented in `backend/db/`:
 ### MySQL Configuration (`.env`)
 
 ```
+# Local development
 MYSQL_USER=root
 MYSQL_PASSWORD=...
 MYSQL_HOST=localhost
 MYSQL_PORT=3306
+MYSQL_DATABASE=riskguard_db
+
+# Production (Aiven for MySQL)
+MYSQL_USER=avnadmin
+MYSQL_PASSWORD=...
+MYSQL_HOST=<your-service>.aivencloud.com
+MYSQL_PORT=<aiven-port>
 MYSQL_DATABASE=riskguard_db
 ```
 
@@ -511,11 +527,12 @@ Credit-Risk-Model/
        │
        ▼
 ┌──────────────────┐
-│   MySQL DB       │
-│  riskguard_db    │
-│  users           │
-│  prediction_logs │
-└──────────────────┘
+│   MySQL DB           │
+│  Aiven Cloud         │
+│  riskguard_db        │
+│  users               │
+│  prediction_logs     │
+└──────────────────────┘
 ```
 
 ---
@@ -553,7 +570,7 @@ All tests run automatically on every push to `main`.
 | Routing | React Router DOM v7 |
 | Backend | FastAPI + Uvicorn |
 | Auth | JWT (python-jose), bcrypt, SlowAPI rate limiting |
-| Database | MySQL + SQLAlchemy + PyMySQL |
+| Database | MySQL (Aiven cloud) + SQLAlchemy + PyMySQL |
 | ML | Pandas, NumPy, Scikit-learn, XGBoost, Optuna |
 | Imbalance | imbalanced-learn (SMOTETomek) |
 | LLM | Groq (`openai/gpt-oss-120b`) |
