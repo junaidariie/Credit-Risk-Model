@@ -62,8 +62,8 @@ def startup_init():
         # Check if an admin account exists
         admin_user = db.query(User).filter(User.role == "admin").first()
         if not admin_user:
-            admin_username = os.getenv("ADMIN_USERNAME", "admin")
-            admin_password = os.getenv("ADMIN_PASSWORD", "AdminPass123!")
+            admin_username = os.getenv("ADMIN_USERNAME")
+            admin_password = os.getenv("ADMIN_PASSWORD")
 
             new_admin = User(
                 username=admin_username,
