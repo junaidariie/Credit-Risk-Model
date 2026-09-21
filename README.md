@@ -12,7 +12,7 @@
 
 ## 🎬 Demo Video
 
-[![RiskGuard AI Demo](https://img.youtube.com/vi/6HOougO-alk/maxresdefault.jpg)](https://youtu.be/6HOougO-alk?feature=shared)
+[![RiskGuard AI Demo](https://img.youtube.com/vi/xHd8uIth3N0/maxresdefault.jpg)](https://youtu.be/xHd8uIth3N0?si=HGgMF2_8ZRTRGTFC)
 
 ---
 
