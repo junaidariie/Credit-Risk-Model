@@ -77,11 +77,12 @@
 
 /* Logout button */
 .s-logout-btn {
-  width: 100%;
-  padding: 16px;
-  font-size: 0.9375rem;
-  border-radius: 0;
+  margin: 14px 18px;
+  padding: 12px 20px;
+  font-size: 0.9rem;
+  border-radius: var(--radius-md);
   gap: 8px;
+  width: calc(100% - 36px);
 }
 
 /* ── Modal overlay ── */

@@ -13,7 +13,11 @@ const useStore = create((set) => ({
   logout: () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    set({ token: null, user: null });
+    set({
+      token: null, user: null,
+      prediction: null, advisorText: '', predictResult: null,
+      chatMessages: [], chatThreadId: uuidv4(),
+    });
   },
 
   // ── Prediction session (persists across tab navigation) ──
