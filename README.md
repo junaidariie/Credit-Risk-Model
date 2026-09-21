@@ -10,6 +10,10 @@
 
 > 🚀 **[Try the Live App →](https://cred-risk-model-frontend.vercel.app/auth)**
 
+## 🎬 Demo Video
+
+[![RiskGuard AI Demo](https://img.youtube.com/vi/6HOougO-alk/maxresdefault.jpg)](https://youtu.be/6HOougO-alk?feature=shared)
+
 ---
 
 ## 🚀 Project Overview
