@@ -1,0 +1,116 @@
+/* ============================================================
+   RiskGuard AI — iOS-inspired Design System v2
+   Dark grey · Red/Blue accents · SF-style typography
+   ============================================================ */
+
+:root {
+  --bg-primary:    #0d0d0f;
+  --bg-secondary:  #1c1c1e;
+  --bg-tertiary:   #2c2c2e;
+  --bg-card:       #1c1c1e;
+  --bg-input:      #2c2c2e;
+  --bg-elevated:   #3a3a3c;
+
+  --accent-blue:   #0a84ff;
+  --accent-blue-d: #0060df;
+  --accent-red:    #ff3b30;
+  --accent-red-d:  #d93025;
+  --accent-green:  #30d158;
+  --accent-orange: #ff9f0a;
+  --accent-purple: #bf5af2;
+
+  --text-primary:   #ffffff;
+  --text-secondary: rgba(235,235,245,0.6);
+  --text-tertiary:  rgba(235,235,245,0.3);
+
+  --separator:     #38383a;
+  --radius-sm:     10px;
+  --radius-md:     14px;
+  --radius-lg:     20px;
+  --radius-xl:     28px;
+  --radius-pill:   999px;
+
+  --shadow-card:   0 4px 24px rgba(0,0,0,0.55);
+  --shadow-btn:    0 4px 14px rgba(0,0,0,0.4);
+  --transition:    all 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 4px; }
+
+/* ── iOS-style pill button base ── */
+.ios-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.ios-btn:active { transform: scale(0.96); }
+
+.ios-btn--primary {
+  background: var(--accent-red);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255,59,48,0.35);
+}
+.ios-btn--primary:hover:not(:disabled) { background: var(--accent-red-d); }
+
+.ios-btn--blue {
+  background: var(--accent-blue);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(10,132,255,0.3);
+}
+.ios-btn--blue:hover:not(:disabled) { background: var(--accent-blue-d); }
+
+.ios-btn--ghost {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--separator);
+}
+.ios-btn--ghost:hover:not(:disabled) { background: var(--bg-elevated); color: var(--text-primary); }
+
+.ios-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── Markdown rendered text ── */
+.md-body { font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); }
+.md-body p { margin-bottom: 10px; }
+.md-body p:last-child { margin-bottom: 0; }
+.md-body strong { color: var(--text-primary); font-weight: 600; }
+.md-body em { color: var(--text-secondary); font-style: italic; }
+.md-body ul, .md-body ol { padding-left: 18px; margin-bottom: 10px; }
+.md-body li { margin-bottom: 4px; }
+.md-body h1,.md-body h2,.md-body h3 { color: var(--text-primary); font-weight: 700; margin-bottom: 6px; margin-top: 12px; }
+
+/* ── Spinner ── */
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+.spinner--sm { width: 13px; height: 13px; }
+.spinner--dark { border-color: rgba(0,0,0,0.15); border-top-color: var(--accent-blue); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.sr-only { position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0); }

@@ -1,21 +1,36 @@
-from fastapi import FastAPI, HTTPException, UploadFile, File, Query
+import os
+import uuid
+import shutil
+import tempfile
+import edge_tts
+
+from fastapi import FastAPI, HTTPException, UploadFile, File, Query, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from sqlalchemy.orm import Session
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+
 from inference.predictor import CreditRiskPredictor
-from advisor_bot import generate_advice, generate_advice_stream
-from chatbot_advisor import ask_chatbot, ask_chatbot_stream
+from advisor_bot import generate_advice_stream
+from chatbot_advisor import ask_chatbot_stream
 from faster_whisper.tokenizer import _LANGUAGE_CODES
 from whisper_service import model
-import os
-import edge_tts
-import uuid
-import shutil, tempfile
+from backend.limiter import limiter
+# DB and Authentication Dependencies
+from backend.db.database import get_db, SessionLocal, engine, Base
+from backend.db.models import User, PredictionLog
+from backend.db.schemas import CreditRiskInput, CreditRiskOutput, ChatMessage, TTS_REQUEST
+from backend.auth.jwt import get_current_user
+from backend.auth.utils import hash_password
 
+# Routers
+from backend.routers import auth_router, user_router, admin_router
 
 # ================== APP INIT ================== #
-
 app = FastAPI(title="RiskGuard AI - Credit Risk Engine")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,64 +41,57 @@ app.add_middleware(
     expose_headers=["X-Request-ID"],
 )
 
-# Temporary in-memory cache
+# Include Modular Routers
+app.include_router(auth_router.router)
+app.include_router(user_router.router)
+app.include_router(admin_router.router)
+
+# Subtitle Cache
 subtitle_cache = {}
 
-# ================== LOAD MODEL ON START ================== #
-
+# Predictor Engine
 predictor = CreditRiskPredictor()
 
-# ================== SCHEMAS ================== #
 
-class CreditRiskInput(BaseModel):
-    age: int
-    income: float
-    loan_amount: float
-    loan_tenure_months: int
-    avg_dpd_per_delinquency: float
-    delinquency_ratio: float
-    credit_utilization_ratio: float
-    num_open_accounts: int
-    residence_type: str
-    loan_purpose: str
-    loan_type: str
+# ================== STARTUP HOOK (AUTO ADMIN CREATION) ================== #
+@app.on_event("startup")
+def startup_init():
+    Base.metadata.create_all(bind=engine)
+    db = SessionLocal()
+    try:
+        # Check if an admin account exists
+        admin_user = db.query(User).filter(User.role == "admin").first()
+        if not admin_user:
+            admin_username = os.getenv("ADMIN_USERNAME", "admin")
+            admin_password = os.getenv("ADMIN_PASSWORD", "AdminPass123!")
 
-
-class CreditRiskOutput(BaseModel):
-    probability: float
-    credit_score: int
-    rating: str
-    advisor_response: str | None = None
-
-
-class ChatMessage(BaseModel):
-    thread_id: str
-    message: str
-    probability: float
-    credit_score: int
-    rating: str
-    advisor_reply: str
-
-
-class TTS_REQUEST(BaseModel):
-    text : str
-    voice : str = "en-GB-SoniaNeural"
-    rate : str = "+0%"
-    volume : str = "+0%"
+            new_admin = User(
+                username=admin_username,
+                password_hash=hash_password(admin_password),
+                role="admin",
+                is_active=True
+            )
+            db.add(new_admin)
+            db.commit()
+            print(f"[INIT] Created default admin account: '{admin_username}'")
+    finally:
+        db.close()
 
 
 # ================== HEALTH ================== #
-
 @app.get("/")
 def root():
     return {"status": "RiskGuard AI API is running."}
 
 
-
 # ================== STREAMING ADVISOR RESPONSE ================== #
-
-@app.post("/predict_credit_risk_stream")
-async def predict_credit_risk_stream(input_data: CreditRiskInput):
+@app.post("/predict_credit_risk_stream", response_model=CreditRiskOutput)
+@limiter.limit("20/minute")
+async def predict_credit_risk_stream(
+        request: Request,
+        input_data: CreditRiskInput,
+        current_user: User = Depends(get_current_user),
+):
     try:
         input_dict = input_data.dict()
         probability, credit_score, rating = predictor.predict(input_dict)
@@ -93,12 +101,30 @@ async def predict_credit_risk_stream(input_data: CreditRiskInput):
             yield f"credit_score:{credit_score}\n"
             yield f"rating:{rating}\n"
 
+            advisor_chunks = []
             for chunk in generate_advice_stream(
+                    probability=probability,
+                    credit_score=credit_score,
+                    rating=rating,
+            ):
+                advisor_chunks.append(chunk)
+                yield f"advisor:{chunk}\n"
+
+            # Single DB write after streaming completes
+            prediction_record = PredictionLog(
+                user_id=current_user.user_id,
+                **input_dict,
                 probability=probability,
                 credit_score=credit_score,
                 rating=rating,
-            ):
-                yield f"advisor:{chunk}\n"
+                advisor_response="".join(advisor_chunks)
+            )
+            save_db = SessionLocal()
+            try:
+                save_db.add(prediction_record)
+                save_db.commit()
+            finally:
+                save_db.close()
 
         return StreamingResponse(event_generator(), media_type="text/plain")
 
@@ -107,18 +133,21 @@ async def predict_credit_risk_stream(input_data: CreditRiskInput):
 
 
 # ================== CHAT STREAM ================== #
-
 @app.post("/chat")
-async def chat(message_data: ChatMessage):
-
+@limiter.limit("30/minute")
+async def chat(
+        request: Request,
+        message_data: ChatMessage,
+        current_user: User = Depends(get_current_user)
+):
     async def event_generator():
         for chunk in ask_chatbot_stream(
-            message_data.probability,
-            message_data.credit_score,
-            message_data.rating,
-            message_data.advisor_reply,
-            message_data.message,
-            message_data.thread_id
+                message_data.probability,
+                message_data.credit_score,
+                message_data.rating,
+                message_data.advisor_reply,
+                message_data.message,
+                message_data.thread_id
         ):
             yield chunk
 
@@ -126,7 +155,6 @@ async def chat(message_data: ChatMessage):
 
 
 # ================== TTS ================== #
-
 async def audio_generator(request_id, text, voice, volume, rate):
     try:
         communicate = edge_tts.Communicate(text=text, voice=voice, volume=volume, rate=rate)
@@ -138,72 +166,54 @@ async def audio_generator(request_id, text, voice, volume, rate):
                 submaker.feed(chunk)
 
         subtitle_cache[request_id] = submaker.get_srt()
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="error generating audio")
 
 
 @app.post("/tts")
-async def tts(tts_params : TTS_REQUEST):
+async def tts(tts_params: TTS_REQUEST, current_user: User = Depends(get_current_user)):
     try:
-
         request_id = str(uuid.uuid4())
-
         return StreamingResponse(
-            audio_generator(text=tts_params.text,
-                                    voice=tts_params.voice,
-                                    volume=tts_params.volume,
-                                    rate=tts_params.rate,
-                                    request_id=request_id
-                                    ),
-
-        media_type='audio/mpeg',
-        headers={"X-Request-ID": request_id},)
-    except Exception as e:
+            audio_generator(
+                text=tts_params.text,
+                voice=tts_params.voice,
+                volume=tts_params.volume,
+                rate=tts_params.rate,
+                request_id=request_id
+            ),
+            media_type='audio/mpeg',
+            headers={"X-Request-ID": request_id},
+        )
+    except Exception:
         raise HTTPException(status_code=500, detail="error generating audio")
 
 
 @app.get("/subtitles/{request_id}")
-async def get_subtitles(request_id : str):
-    try:
-        srt = subtitle_cache.pop(request_id, None)
+async def get_subtitles(request_id: str):
+    srt = subtitle_cache.pop(request_id, None)
+    if srt is None:
+        raise HTTPException(status_code=404, detail="Subtitles not ready")
+    return {'request_id': request_id, 'subtitles': srt}
 
-        if srt is None:
-            raise HTTPException(status_code=404, detail="Subtitles not ready")
-
-        return {
-            'request_id' : request_id,
-            'subtitles' : srt
-        }
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail='error generating subtitles')
-    
 
 @app.get('/tts_available_voices')
 async def available_voices():
     try:
         voices = await edge_tts.list_voices()
-        simplified = [{"Voice":v['ShortName'], "Gender" : v['Gender']} for v in voices]
-        num_voices = len(voices)
-        return {"Available Voices" : num_voices,
-                "Voices" : simplified}
-    except Exception as e:
+        simplified = [{"Voice": v['ShortName'], "Gender": v['Gender']} for v in voices]
+        return {"Available Voices": len(voices), "Voices": simplified}
+    except Exception:
         raise HTTPException(status_code=500, detail='error fetching available voices')
 
 
 # ================== STT ================== #
-
-
 @app.get('/stt_supported_voices')
 async def stt_supported_voices():
     try:
         supported_languages = sorted(_LANGUAGE_CODES)
-        total_languages = len(_LANGUAGE_CODES)
-        return {
-            "TOtal Languages" : total_languages,
-            "Supported Languages": supported_languages
-            }
-    except Exception as e:
+        return {"Total Languages": len(_LANGUAGE_CODES), "Supported Languages": supported_languages}
+    except Exception:
         raise HTTPException(status_code=500, detail='error fetching supported languages')
 
 
@@ -211,24 +221,22 @@ def transcribe_audio(file_path: str, translation: bool = False, language_detecti
     try:
         task_type = "translate" if translation else "transcribe"
         segments, info = model.transcribe(file_path, task=task_type, beam_size=3, vad_filter=True)
-
-        result = {
-            "segments": [segment.text for segment in segments]
-        }
-
+        result = {"segments": [segment.text for segment in segments]}
         if language_detection:
             result["detected_language"] = info.language
             result["language_probability"] = info.language_probability
-
         return result
-
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"error transcribing audio: {str(e)}")
 
 
-
 @app.post("/stt")
-async def stt(file_path : UploadFile = File(...), translation : bool = Query(False), language_detection : bool = Query(False)):
+async def stt(
+        file_path: UploadFile = File(...),
+        translation: bool = Query(False),
+        language_detection: bool = Query(False),
+        current_user: User = Depends(get_current_user)
+):
     try:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp:
             shutil.copyfileobj(file_path.file, temp)
@@ -236,6 +244,5 @@ async def stt(file_path : UploadFile = File(...), translation : bool = Query(Fal
 
         result = transcribe_audio(file_path=temp_path, translation=translation, language_detection=language_detection)
         return result
-
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="error generating captions")

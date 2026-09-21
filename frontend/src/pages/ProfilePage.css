@@ -1,0 +1,144 @@
+.profile-root { display: flex; flex-direction: column; gap: 18px; }
+
+.profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+.profile-avatar {
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 700;
+  flex-shrink: 0;
+}
+.profile-name { font-size: 1.2rem; font-weight: 700; }
+.profile-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 8px;
+  margin-top: 6px;
+}
+.profile-role-badge.admin { background: rgba(191,90,242,0.15); color: var(--accent-purple); }
+.profile-role-badge.user  { background: rgba(10,132,255,0.12); color: var(--accent-blue); }
+
+/* Stats */
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+}
+.profile-stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.profile-stat-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.profile-stat-value { font-size: 1.3rem; font-weight: 700; }
+.profile-stat-label { font-size: 0.72rem; color: var(--text-secondary); margin-top: 1px; }
+
+/* Tabs */
+.profile-tabs {
+  display: flex;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 3px;
+}
+.profile-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 9px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.profile-tab.active {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* List */
+.profile-list { display: flex; flex-direction: column; gap: 10px; }
+.profile-empty { text-align: center; color: var(--text-secondary); font-size: 0.875rem; padding: 24px; }
+
+/* History item */
+.profile-history-item {
+  background: var(--bg-card);
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.phi-left { display: flex; align-items: center; gap: 14px; }
+.phi-score { font-size: 1.6rem; font-weight: 700; color: var(--accent-blue); }
+.phi-rating { font-size: 0.875rem; font-weight: 600; }
+.phi-date { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
+.phi-right { text-align: right; }
+.phi-prob { font-size: 1.2rem; font-weight: 700; }
+.phi-prob-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 2px; }
+
+/* User item */
+.profile-user-item {
+  background: var(--bg-card);
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.pui-avatar {
+  width: 38px; height: 38px;
+  background: var(--bg-tertiary);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.pui-info { flex: 1; }
+.pui-name { font-size: 0.9rem; font-weight: 600; }
+.pui-role { font-size: 0.72rem; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.4px; }
+.pui-role.admin { color: var(--accent-purple); }
+.pui-role.user  { color: var(--text-secondary); }
+.pui-promote-btn {
+  background: rgba(10,132,255,0.12);
+  border: 1px solid rgba(10,132,255,0.3);
+  color: var(--accent-blue);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+}
+.pui-promote-btn:hover:not(:disabled) { background: rgba(10,132,255,0.2); }
+.pui-promote-btn:disabled { opacity: 0.5; cursor: not-allowed; }

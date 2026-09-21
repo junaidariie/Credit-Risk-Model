@@ -22,3 +22,16 @@ edge_tts
 matplotlib
 seaborn
 faster-whisper
+
+# Backend / Database
+sqlalchemy
+psycopg2-binary
+alembic
+
+# Authentication / Security
+python-jose[cryptography]
+passlib[bcrypt]
+
+# Rate Limiting
+slowapi
+pymysql
